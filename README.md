@@ -1,4 +1,4 @@
 # VTT
-Video To Text
+Voice To Text
 
 테스트입니다

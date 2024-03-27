@@ -1,0 +1,97 @@
+.Version {
+  background-color: white;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background-color: white;
+  color: black;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #EDEDED;
+}
+
+.nav-title {
+  text-decoration: none;
+  color: black;
+  font-size: 16px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-left: 50px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: black;
+  padding: 10px;
+  font-size: 14px;
+}
+
+.nav-link.active-link {
+  color: #486AAE;
+}
+
+.nav-link:hover {
+  text-decoration: none;
+}
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.search-form {
+  display: flex;
+  position: relative; /* 버튼을 input 내부에 위치시키기 위해 relative로 설정 */
+  width: 70%; /* 전체 검색 폼 너비 */
+  margin: 0 auto; /* 중앙 정렬 */
+}
+
+.search-input {
+  width: 100%; /* 부모 요소(search-form)의 전체 너비를 사용 */
+  padding: 10px;
+  padding-right: 50px; /* 검색 아이콘 버튼을 위한 공간 확보 */
+  border: 2px solid #ccc;
+  border-radius: 25px; /* 입력 필드를 더 둥글게 만듦 */
+  font-size: 16px;
+}
+
+.search-button {
+  padding: 0 10px;
+  margin-left: -40px; /* 아이콘 버튼 위치 조정 */
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.write-button {
+  padding: 10px 15px;
+  margin-left: 10px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  background-color: #4CAF50;
+  color: white;
+}
+.footer-links {
+  position: absolute;
+  bottom: 0;
+  left: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.footer-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}

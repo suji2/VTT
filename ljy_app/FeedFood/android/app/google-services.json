@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "327383972849",
+    "project_id": "feedfood-e34db",
+    "storage_bucket": "feedfood-e34db.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:327383972849:android:f3acfb0a09c31de4722250",
+        "android_client_info": {
+          "package_name": "com.feedfood"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwR0b2Bq6VEYz4RL5Hh83UX8cSR9gkvqE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,4 +1,4 @@
-//À½¼º Å×ÀÌºí
+//ìŒì„± í…Œì´ë¸”
 CREATE TABLE voice ( 
 	voice_id	INT		NOT NULL,
 	video_id	INT		NOT NULL,
@@ -6,7 +6,7 @@ CREATE TABLE voice (
 	voice_Url	VARCHAR(500)		NULL
 );
 
-//ÅØ½ºÆ® Å×ÀÌºí
+//í…ìŠ¤íŠ¸ í…Œì´ë¸”
 CREATE TABLE text (
 	text_Num	INT		NOT NULL,
 	voice_id	INT		NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE text (
 	text_Summary	VARCHAR(100)		NULL
 );
 
-//À¯Æ©ºê ´ñ±Û Å×ÀÌºí
+//ìœ íŠœë¸Œ ëŒ“ê¸€ í…Œì´ë¸”
 CREATE TABLE yt_comment ( 
 	user_id	INT		NOT NULL,
 	video_id	INT		NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE yt_comment (
 	comment_Summary	VARCHAR(100)		NULL
 );
 
-//À¯Æ©ºê µ¿¿µ»ó Å×ÀÌºí
+//ìœ íŠœë¸Œ ë™ì˜ìƒ í…Œì´ë¸”
 CREATE TABLE video ( 
 	video_id	INT		NOT NULL,
 	video_Url	VARCHAR(500)		NULL,
@@ -34,7 +34,7 @@ CREATE TABLE video (
 	thumbnail	VARCHAR(255)		NULL
 );
 
-//q&a Áú¹® Å×ÀÌºí
+//q&a ì§ˆë¬¸ í…Œì´ë¸”
 CREATE TABLE question ( 
 	question_id	INT		NOT NULL,
 	answer	INT		NOT NULL,
@@ -44,7 +44,7 @@ CREATE TABLE question (
 	pw	VARCHAR(100)		NULL
 );
 
-//q&a ´äº¯ Å×ÀÌºí
+//q&a ë‹µë³€ í…Œì´ë¸”
 CREATE TABLE answer ( 
     answer_id	INT		NOT NULL,
 	question_id	INT		NOT NULL,
@@ -53,7 +53,7 @@ CREATE TABLE answer (
 	modified_date	DATE		NULL
 );
 
-//q&a ´äº¯ ´ñ±Û Å×ÀÌºí
+//q&a ë‹µë³€ ëŒ“ê¸€ í…Œì´ë¸”
 CREATE TABLE answer_comment ( 
 	question_id	INT		NOT NULL,
 	comment_Save	VARCHAR(500)		NULL,

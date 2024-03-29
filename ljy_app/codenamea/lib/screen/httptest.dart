@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:codenamea/json/youtubedata.dart';
 
 class Httptest extends StatefulWidget {
   @override
@@ -8,8 +9,8 @@ class Httptest extends StatefulWidget {
 }
 
 class _HttptestState extends State<Httptest> {
-  String jsonData = '';
-  String testData = '';
+  List<YoutubeData> youtubedata = [];
+
 
   Future<void> fetchData() async {
     var url = Uri.parse('http://192.168.34.10:8080/videos');
@@ -17,12 +18,9 @@ class _HttptestState extends State<Httptest> {
 
     if (response.statusCode == 200) {
       setState(() {
-        testData = response.body; // JSON 응답을 그대로 문자열로 저장
-        List<dynamic> jsonData = jsonDecode(response.body);// JSON 응답을 파싱하여 데이터 변수에 저장
-      });
-    } else {
-      setState(() {
-        jsonData = '데이터 받아오기 실패: ${response.statusCode}';
+
+        List<dynamic> jsonData = jsonDecode(response.body); // JSON 응답을 파싱하여 데이터 변수에 저장
+        youtubedata = jsonData.map((data) => YoutubeData.fromJson(data)).toList();
       });
     }
   }
@@ -44,7 +42,18 @@ class _HttptestState extends State<Httptest> {
               child: Text('받아오기'),
             ),
             SizedBox(height: 20),
-            Text(testData), // 데이터를 화면에 표시
+            // 데이터를 화면에 표시
+            Expanded(
+              child: ListView.builder(
+                itemCount: youtubedata.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(youtubedata[index].title),
+                    subtitle: Text(youtubedata[index].description),
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),

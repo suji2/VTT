@@ -28,8 +28,15 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  path_provider: ^2.1.1
+  table_calendar: ^3.0.6
+  flutter_native_splash: ^2.3.6
+  firebase_core: ^2.4.0
+  cloud_firestore: ^4.2.0
+  firebase_storage: ^11.0.8
   flutter:
     sdk: flutter
+
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -37,6 +44,15 @@ dependencies:
   cupertino_icons: ^1.0.6
   image_picker: 0.8.5+3
   video_player: 2.4.6
+  change_app_package_name: ^1.1.0
+  pull_to_refresh: ^2.0.0
+  get_it: ^7.6.4
+  drift: ^2.14.0
+  uuid: ^4.2.1
+  flutter_naver_map: ^1.0.2
+  flutter_naver_login: ^1.8.0
+  kmeans: ^1.0.0
+  http: ^1.2.1
 
 dev_dependencies:
   flutter_test:
@@ -62,8 +78,11 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+     - assets/img/btn-app.png
+     - assets/img/btn-face.png
+     - assets/img/btnG.png
+     - assets/img/bingo.png
+     - assets/img/btnKaKa.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

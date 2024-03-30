@@ -13,7 +13,7 @@ public class Text {
     @Id
     @Column(name = "text_Num")
     @SequenceGenerator(name = "mySequence", sequenceName = "member_seq", allocationSize = 1)
-    private Integer textNum;
+    private Long textNum;
 
     @ManyToOne
     @JoinColumn(name = "voice_id")

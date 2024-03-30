@@ -14,7 +14,7 @@ public class Voice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @SequenceGenerator(name = "mySequence", sequenceName = "member_seq", allocationSize = 1)
     @Column(name = "voice_id")
-    private Integer voiceId;
+    private Long voiceId;
 
     @ManyToOne
     @JoinColumn(name = "video_id")

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -15,13 +16,19 @@ public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "question_id")
-    private Integer questionId;
+    private Long questionId;
 
-    @Column(name = "text", columnDefinition = "TEXT")
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "text")
     private String text;
 
-    @Column(name = "date")
-    private Date date;
+    @Column(name = "create_date")
+    private LocalDateTime createDate;
+
+    @Column(name = "modified_date")
+    private LocalDateTime modifyDate;
 
     // getters and setters
 }

@@ -12,7 +12,7 @@ public class Video {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "VIDEO_ID")
-    private String id;
+    private Long id;
 
     @Column(name = "VIDEO_URL")
     private String url;

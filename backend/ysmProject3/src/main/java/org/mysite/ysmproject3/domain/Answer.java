@@ -1,9 +1,6 @@
 package org.mysite.ysmproject3.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,10 +12,12 @@ public class Answer {
 
     @Id
     @Column(name = "answer")
-    private Integer answer;
+    private Long answer;
 
     @Column(name = "Field")
     private String field;
 
+    @OneToOne
+    private Question question;
     // getters and setters
 }

@@ -14,16 +14,20 @@ function Login() {
 
     // 구글 로그인 페이지로 리디렉션합니다.
     window.location.href = authUrl;
+
+    // 로그인이 성공했을 때 호출되는 함수
+    const handleLoginSuccess = () => {
+      setLoginMessage('로그인 성공!');
+      setIsLoggedIn(true); // 로그인 상태를 변경합니다.
+    };
+
+    // 구글 로그인이 성공했을 때 호출되어야 할 함수
+    // 여기서는 호출하지 않고, 로그인 성공 후에 호출되도록 작성합니다.
   };
 
   const handleLogout = () => {
     // 로그아웃 로직을 여기에 추가하세요
     setIsLoggedIn(false);
-  };
-
-  const handleLoginSuccess = () => {
-    setLoginMessage('로그인 성공!');
-    setIsLoggedIn(true); // 로그인 상태를 변경합니다.
   };
 
   const getUserInfo = async () => {
@@ -37,6 +41,11 @@ function Login() {
     }
   };
 
+  const handleLoginSuccess = () => {
+    setLoginMessage('로그인 성공!');
+    setIsLoggedIn(true); // 로그인 상태를 변경합니다.
+  };
+
   return (
     <div className="Login">
       <header className="header">
@@ -46,7 +55,7 @@ function Login() {
           <NavLink to="/about" className={({ isActive }) => isActive ? "nav-link active-link" : "nav-link"}>ABOUT</NavLink>
           <NavLink to="/version" className={({ isActive }) => isActive ? "nav-link active-link" : "nav-link"}>Q&A</NavLink>
           <NavLink to={isLoggedIn ? "/logout" : "/login"} className={({ isActive }) => isActive ? "nav-link active-link" : "nav-link"} onClick={isLoggedIn ? handleLogout : handleGoogleLogin}>
-            {isLoggedIn ? "로그아웃" : "로그인"}
+            {isLoggedIn ? "logout" : "login"}
           </NavLink>
         </nav>
       </header>

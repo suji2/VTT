@@ -1,0 +1,101 @@
+.WriteForm {
+  background-color: white;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background-color: white; /* 헤더 배경을 흰색으로 설정 */
+  color: black; /* 헤더 내 텍스트 색상을 검정으로 설정 */
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #EDEDED; /* 올바른 색상 코드 형식 */
+}
+.nav-title {
+  text-decoration: none;
+  color: black; /* 텍스트 색상 설정 */
+  font-size: 16px !important
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-left: 50px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: black;
+  padding: 10px;
+  font-size: 14px;
+}
+
+.nav-link.active-link {
+  color: #486AAE;
+}
+
+.nav-link:hover {
+  text-decoration: none;
+}
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* 추가된 스타일 */
+.WriteForm form {
+  display: flex;
+  flex-direction: column;
+  width: 50%; /* 폼의 너비 설정 */
+  max-width: 600px; /* 폼의 최대 너비 설정 */
+}
+
+.WriteForm label {
+  margin-top: 10px;
+}
+
+.WriteForm input[type="text"],
+.WriteForm input[type="password"], /* 비밀번호 입력 필드에 대한 스타일 추가 */
+.WriteForm textarea {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 20px; /* 각 요소의 하단 간격 조정 */
+  width: 100%; /* 폼 너비에 맞춤 */
+}
+
+.WriteForm button[type="submit"] {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 100%; /* 버튼 너비를 입력 필드와 동일하게 설정 */
+  margin-top: 20px; /* 버튼 상단 간격 조정 */
+}
+
+.WriteForm button[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+.footer-links {
+  position: absolute;
+  bottom: 0;
+  left: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.footer-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}

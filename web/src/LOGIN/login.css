@@ -1,0 +1,83 @@
+.ABOUT {
+    background-color: white;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .header {
+    background-color: white; /* 헤더 배경을 흰색으로 설정 */
+    color: black; /* 헤더 내 텍스트 색상을 검정으로 설정 */
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #EDEDED; /* 올바른 색상 코드 형식 */
+  }
+  
+  .nav-title {
+    text-decoration: none;
+    color: black; /* 텍스트 색상 설정 */
+    font-size: 16px !important
+  }
+  
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* 링크 사이의 간격을 넓힘 */
+    padding-left: 50px; /* 왼쪽 패딩 추가 */
+  }
+  
+  /* 네비게이션 링크의 기본 스타일 */
+  .nav-link {
+    text-decoration: none;
+    color: black; /* 네비게이션 링크 색상을 검정으로 변경 */
+    padding: 10px; /* 클릭 영역을 넓히기 위해 패딩 추가 */
+    font-size: 14px !important
+  }
+  
+  /* 활성화된 네비게이션 링크 스타일 */
+  .nav-link.active-link {
+    color: #486AAE; /* 활성 링크의 텍스트 색상만 파란색으로 변경 */
+    /* 밑줄을 제거했습니다 */
+  }
+  
+  .nav-link:hover {
+    text-decoration: none; /* 호버 시 밑줄 제거 */
+  }
+  
+  .footer-links {
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .footer-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+  }
+  
+  .google-login-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .google-login-button {
+    padding: 10px 20px;
+    background-color: #4285F4; /* 구글 블루 컬러 */
+    color: white;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+  }
+  
+  .google-login-button:hover {
+    background-color: #357ae8; /* 마우스 오버시 색상 변경 */
+  }
+    

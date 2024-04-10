@@ -52,8 +52,9 @@
 .search-form {
   display: flex;
   position: relative; /* 버튼을 input 내부에 위치시키기 위해 relative로 설정 */
-  width: 70%; /* 전체 검색 폼 너비 */
+  width: 30%; /* 전체 검색 폼 너비 */
   margin: 0 auto; /* 중앙 정렬 */
+  padding: 5%
 }
 
 .search-input {
@@ -74,24 +75,47 @@
 }
 
 .write-button {
-  padding: 10px 15px;
-  margin-left: 10px;
+  padding: 10px 10px;
+  margin-left: 15px; /* 검색 버튼과의 간격 */
   border: none;
   border-radius: 25px;
   cursor: pointer;
   background-color: #4CAF50;
   color: white;
-}
-.footer-links {
-  position: absolute;
-  bottom: 0;
-  left: 10px;
-  display: flex;
-  align-items: center;
+  font-size: 0.8em; /* 텍스트 크기를 조절 */
+  min-width: 70px; /* 버튼의 최소 너비 설정 */
+  white-space: nowrap; /* 텍스트를 두 줄로 나누지 않고 한 줄에 표시 */
 }
 
-.footer-icon {
-  width: 20px;
-  height: 20px;
-  margin-right: 10px;
+.content-table .table-row.header {
+  position: relative;
+  padding: 10px 0;
+  border-bottom: none; /* 이 부분을 제거합니다. */
+}
+
+.content-table .table-row.header:after {
+  content: '';
+  position: absolute;
+  left: 180px; /* 이 값들을 조정하여 줄의 양 끝 간격을 조절할 수 있습니다. */
+  right: 180px;
+  bottom: 0;
+  border-bottom: 1px solid #ddd; /* 밑줄 스타일을 여기에서만 정의합니다. */
+}
+
+.content-table .table-cell:nth-child(1) {
+  flex-basis: 20%; /* 번호 열의 너비를 설정합니다. */
+  padding-left: 250px; /* 원하는 왼쪽 여백을 추가합니다. */
+  text-align: left; /* 텍스트를 왼쪽으로 정렬합니다. */
+}
+
+.content-table .table-cell:nth-child(2) {
+  flex-basis: 20%; /* 예: 제목 열 너비가 다른 열보다 넓게 설정 */
+}
+
+.content-table .table-cell:nth-child(3) {
+  flex-basis: 10%; /* 예: 작성일 열 너비 */
+}
+
+.content-table .table-cell:nth-child(4) {
+  flex-basis: 18%; /* 예: 진행상황 열 너비 */
 }

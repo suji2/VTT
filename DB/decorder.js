@@ -27,7 +27,7 @@ async function saveBlobAsFile() {
       const bufferData = result.rows[0][0];
 
       // 이미지 데이터를 파일로 저장
-      fs.writeFileSync('이미지파일명.png', bufferData);
+      fs.writeFileSync('저장된 이미지.png', bufferData);
 
       console.log('이미지 파일로 저장 완료');
     } else {

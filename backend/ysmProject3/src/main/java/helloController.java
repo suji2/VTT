@@ -11,6 +11,6 @@ public class helloController {
     @GetMapping("/hellomvc")
     @ResponseBody
     public String hellomvc(){
-        return "testRFFDF";
+        return "test";
     }
 }

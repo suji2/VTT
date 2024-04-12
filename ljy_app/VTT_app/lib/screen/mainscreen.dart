@@ -5,17 +5,18 @@ import 'package:vtt_app/screen/myfav.dart';
 import 'package:vtt_app/screen/myinfo.dart';
 import 'package:vtt_app/screen/search.dart';
 import 'package:vtt_app/screen/videoUpload.dart';
+import 'package:vtt_app/const/googleUser.dart';
+import 'package:provider/provider.dart';
 
-
-class mainscreen extends StatefulWidget {
+class Mainscreen extends StatefulWidget {
   final int data;
-  const mainscreen({Key? key, required this.data}) : super(key: key);
+  const Mainscreen({Key? key, required this.data}) : super(key: key);
 
   @override
-  State<mainscreen> createState() => _mainscreenstate();
+  State<Mainscreen> createState() => _mainscreenstate();
 }
 
-class _mainscreenstate extends State<mainscreen> {
+class _mainscreenstate extends State<Mainscreen> {
   int _selectedIndex = 0;
 
   @override
@@ -31,6 +32,8 @@ class _mainscreenstate extends State<mainscreen> {
 
   @override
   Widget build(BuildContext context) {
+    //final googleUser = Provider.of<GoogleUser>(context);
+
     return Scaffold(
       body: Center(
         child: _getPage(_selectedIndex),
@@ -71,7 +74,7 @@ class _mainscreenstate extends State<mainscreen> {
   Widget _getPage(int index) {
     switch (index) {
       case 0:
-        return SignInDemo();
+        return Myfav();
       case 1:
         return Search();
       case 2:

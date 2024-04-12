@@ -1,74 +1,68 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:googleapis/youtube/v3.dart' as youtube;
-import 'package:http/http.dart' as http;
+import 'package:googleapis/cloudasset/v1.dart';
+import 'package:provider/provider.dart';
+import 'package:vtt_app/const/googleUser.dart';
 
-class LoginScreen extends StatefulWidget {
-  @override
-  _LoginScreenState createState() => _LoginScreenState();
-}
-const List<String> scopes = <String>[
-  'email',
-  'https://www.googleapis.com/auth/youtube',
-];
-
-GoogleSignIn _googleSignIn = GoogleSignIn(
-  clientId: "935624103884-n0o0a7ejgbko6i9u9m3m0mv2nvo6f6to.apps.googleusercontent.com",
-  scopes: scopes,
-);
-
-class _LoginScreenState extends State<LoginScreen> {
-
-
-
-  GoogleSignInAccount? _currentUser;
-
-  Future<void> _handleSignIn() async {
-    try {
-      await _googleSignIn.signIn();
-    } catch (error) {
-      print(error);
-    }
-  }
-  Future<void> _handleSignOut() async {
-    try {
-      await _googleSignIn.signOut();
-    } catch (error) {
-      print(error);
-    }
-  }
-
-
-
+class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    if (_currentUser != null) {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+    final googleUser = Provider.of<GoogleUser>(context);
+
+    return Scaffold(
+      body: Column(
         children: <Widget>[
-          Text('Signed in as: ${_currentUser!.displayName}'),
-          Text('Email: ${_currentUser!.email}'),
-          ElevatedButton(
-            child: Text('Fetch YouTube Data'),
-            onPressed: (){},
-          ),
-          ElevatedButton(
-            child: Text('Sign out'),
-            onPressed: (){_handleSignOut();},
-          ),
+          if (googleUser.currentUser != null)
+            Column(
+              children: <Widget>[
+                Text('로그인된 사용자: ${googleUser.currentUser!.email}'),
+                ElevatedButton(
+                  onPressed: () {
+                    googleUser.signOut();
+                  },
+                  child: Text('로그아웃'),
+                ),
+              ],
+            )
+          else
+            Stack(
+              children: [
+                Container(
+                  child: Image.asset('assets/img/loginscreen.png',fit: BoxFit.cover),
+                  width: MediaQuery.of(context).size.width, // 현재 화면의 너비에 맞게 조정
+                  height: MediaQuery.of(context).size.height - 58,
+                ),
+                const Positioned(
+                    top: 140,
+                    left: 50,
+                    child: Text("당신의",style: TextStyle(fontFamily:"Pretendard", fontWeight:FontWeight.w700, fontSize:35, color: Colors.white),)),
+                const Positioned(
+                  top: 175,
+                    left: 20,
+                    child: Text("유튜브를",style: TextStyle(fontFamily:"Pretendard", fontWeight:FontWeight.w700, fontSize:35, color: Colors.white),)),
+                const Positioned(
+                  top: 210,
+                    left: 20,
+                    child: Text("요약해보세요.",style: TextStyle(fontFamily:"Pretendard", fontWeight:FontWeight.w700, fontSize:35, color: Colors.white),)),
+                Positioned(
+                  top: 470,
+                  left: 100,
+                  child: GestureDetector(
+                    onTap: () {
+                      googleUser.signIn();
+                    },
+                    child: Image.asset(
+                      'assets/img/signGoogle.png',
+                      height: 50,
+                    ),
+                  ),
+                ),
+
+
+              ],
+            ),
         ],
-      );
-    } else {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text('You are not signed in.'),
-          ElevatedButton(
-            child: Text('Sign in with Google'),
-            onPressed: (){_handleSignIn();},
-          ),
-        ],
-      );
-    }
+      ),
+    );
   }
 }

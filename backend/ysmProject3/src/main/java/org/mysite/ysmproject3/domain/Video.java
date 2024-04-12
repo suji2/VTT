@@ -10,7 +10,9 @@ import lombok.Setter;
 public class Video {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "mySequence", sequenceName = "video_seq", allocationSize = 1)
+
     @Column(name = "VIDEO_ID")
     private Long id;
 

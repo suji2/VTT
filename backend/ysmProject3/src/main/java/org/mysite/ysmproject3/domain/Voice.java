@@ -12,7 +12,7 @@ public class Voice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @SequenceGenerator(name = "mySequence", sequenceName = "member_seq", allocationSize = 1)
+    @SequenceGenerator(name = "mySequence", sequenceName = "voice_seq", allocationSize = 1)
     @Column(name = "voice_id")
     private Long voiceId;
 

@@ -12,6 +12,7 @@ public class Text {
 
     @Id
     @Column(name = "text_Num")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "mySequence", sequenceName = "member_seq", allocationSize = 1)
     private Long textNum;
 

@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Table(name = "question")
@@ -14,12 +13,19 @@ import java.util.Date;
 public class Question {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "question_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "mySequence", sequenceName = "question_seq", allocationSize = 1)
     private Long questionId;
 
     @Column(name = "password")
     private String password;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "subject")
+    private String subject;
 
     @Column(name = "text")
     private String text;
@@ -30,5 +36,7 @@ public class Question {
     @Column(name = "modified_date")
     private LocalDateTime modifyDate;
 
-    // getters and setters
+    @OneToOne
+    @JoinColumn(name = "answerId")
+    private Answer answer;
 }

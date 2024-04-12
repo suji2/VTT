@@ -4,7 +4,6 @@ package org.mysite.ysmproject3.service;
 import lombok.RequiredArgsConstructor;
 import org.mysite.ysmproject3.domain.Video;
 import org.mysite.ysmproject3.repository.VideoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

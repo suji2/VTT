@@ -1,11 +1,9 @@
 package org.mysite.ysmproject3.service;
 
 import lombok.RequiredArgsConstructor;
-import org.mysite.ysmproject3.domain.Answer;
 import org.mysite.ysmproject3.domain.Question;
 import org.mysite.ysmproject3.exception.DataNotFoundException;
 import org.mysite.ysmproject3.repository.QuestionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

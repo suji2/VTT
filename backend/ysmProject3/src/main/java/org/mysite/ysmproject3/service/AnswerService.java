@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.mysite.ysmproject3.domain.Answer;
 import org.mysite.ysmproject3.domain.Question;
 import org.mysite.ysmproject3.repository.AnswerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

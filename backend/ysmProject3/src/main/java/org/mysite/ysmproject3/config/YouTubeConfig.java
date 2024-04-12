@@ -20,13 +20,13 @@ public class YouTubeConfig {
         this.clientService = clientService;
     }
 
-    @Bean
-    public YouTube youTube() {
-        OAuth2AuthorizedClient client = clientService.loadAuthorizedClient(
-                "google", "user");
-        GoogleCredentials credentials = GoogleCredentials.create(new AccessToken(client.getAccessToken().getTokenValue(), null));
-        return new YouTube.Builder(GoogleNetHttpTransport.newTrustedTransport(), JacksonFactory.getDefaultInstance(), new HttpCredentialsAdapter(credentials))
-                .setApplicationName("spring-youtube-application")
-                .build();
-    }
+//    @Bean
+//    public YouTube youTube() {
+//        OAuth2AuthorizedClient client = clientService.loadAuthorizedClient(
+//                "google", "user");
+//        GoogleCredentials credentials = GoogleCredentials.create(new AccessToken(client.getAccessToken().getTokenValue(), null));
+//        return new YouTube.Builder(GoogleNetHttpTransport.newTrustedTransport(), JacksonFactory.getDefaultInstance(), new HttpCredentialsAdapter(credentials))
+//                .setApplicationName("spring-youtube-application")
+//                .build();
+//    }
 }

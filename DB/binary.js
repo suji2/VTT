@@ -13,7 +13,9 @@ oracledb.getConnection({
 .then(connection => {
   // 이미지 데이터 삽입
   connection.execute(
-    `INSERT INTO TEST (ANSWER_TEXT, MODIFIED) VALUES (7, :blobData)`,
+    `INSERT INTO YOUTUBE (ID, VOICE_ID, PW, SUB_CHANNEL, THUMBNAIL, DESCRIPTION, SEARCH, YT_COMMENT) VALUES 
+    ('tnwl3109', 1, 1234, '자바공장', :blobData, '이것이 SQL Server다 01. DBMS 개요와 SQL Server 2016 소개(1)', 
+    '자바', '자바 어렵다')`,
     [binaryData],
     { autoCommit: true },
     (err, result) => {

@@ -1,12 +1,16 @@
 package org.mysite.ysmproject3.youtube;
 
+import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.mysite.ysmproject3.domain.Video;
+import org.mysite.ysmproject3.repository.VideoRepository;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
@@ -15,17 +19,60 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class YoutubeService {
 
-    //구독아이디 리스트로 반환
-    public List<String> getSubscriptions(String accessToken) throws IOException, GeneralSecurityException {
+    private final VideoRepository videoRepository;
+
+    //특정 영상 정보 및 저장
+    public String getDetailVideo(String accessToken, @RequestParam String videoId) {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(accessToken);
         HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
 
+        String url = String.format("https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=%s", videoId);
+
         ResponseEntity<String> response = restTemplate.exchange(
-                "https://www.googleapis.com/youtube/v3/subscriptions?part=snippet&mine=true&maxResults=5",
+                url,
+                HttpMethod.GET,
+                entity,
+                String.class);
+
+        JSONObject jsonResponse = new JSONObject(response.getBody());
+        JSONArray items = jsonResponse.getJSONArray("items");
+        JSONObject item = items.getJSONObject(0);
+        JSONObject snippet = item.getJSONObject("snippet");
+        JSONObject id = item.getJSONObject("id");
+        JSONObject thumbnails = snippet.getJSONObject("thumbnails");
+        JSONObject smThumbnail = thumbnails.getJSONObject("default");
+        JSONObject bigThumbnail = thumbnails.getJSONObject("high");
+
+
+        Video video = new Video();
+        video.setId(id.getString("videoId"));
+        video.setPublishedAt(snippet.getString("publishedAt"));
+        video.setTitle(snippet.getString("title"));
+        video.setDescription(snippet.getString("description"));
+        video.setChannel(snippet.getString("channelTitle"));
+        video.setSmThumbnail(smThumbnail.getString("url"));
+        video.setBigThumbnail(bigThumbnail.getString("url"));
+        this.videoRepository.save(video);
+
+        return response.getBody();
+    }
+
+    //구독아이디 리스트로 반환
+    public List<String> getSubscriptions(String accessToken, String nextPageToken) throws IOException, GeneralSecurityException {
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(accessToken);
+        HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
+
+        String url = String.format("https://www.googleapis.com/youtube/v3/subscriptions?part=snippet&mine=true&maxResults=50&pageToken%s", nextPageToken);
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                url,
                 HttpMethod.GET,
                 entity,
                 String.class);
@@ -94,6 +141,5 @@ public class YoutubeService {
 
         return response.getBody();
     }
-    
 
 }

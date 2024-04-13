@@ -10,14 +10,8 @@ import lombok.Setter;
 public class Video {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "mySequence", sequenceName = "video_seq", allocationSize = 1)
-
     @Column(name = "VIDEO_ID")
-    private Long id;
-
-    @Column(name = "VIDEO_URL")
-    private String url;
+    private String id;
 
     @Column(name = "TITLE")
     private String title;
@@ -29,8 +23,11 @@ public class Video {
     private String channel;
 
     @Column(name = "PUBLISHED_AT")
-    private String date;
+    private String publishedAt;
 
-    @Column(name = "THUMBNAIL")
-    private String thumbnail;
+    @Column(name = "SM_THUMBNAIL")
+    private String smThumbnail;
+
+    @Column(name = "BIG_THUMBNAIL1")
+    private String bigThumbnail;
 }

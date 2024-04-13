@@ -28,8 +28,6 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class YouTubeController {
-    //임시 영상 ID
-    private static final String VIDEO_ID = "1ifSAFCGiX8";
 
     private final OAuth2AuthorizedClientService authorizedClientService;
     private final YoutubeService youtubeService;
@@ -38,7 +36,7 @@ public class YouTubeController {
     //http://localhost:8080/youtube/channel
     @GetMapping("/youtube/channel")
     @ResponseBody
-    public List<String> callYouTubeApi(Authentication authentication) throws IOException, GeneralSecurityException {
+    public List<String> callYouTubeApi(Authentication authentication, @RequestParam String nextPageToken) throws IOException, GeneralSecurityException {
         OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
         OAuth2AuthorizedClient client = authorizedClientService
                 .loadAuthorizedClient(
@@ -51,7 +49,7 @@ public class YouTubeController {
 
         String accessToken = client.getAccessToken().getTokenValue();
 
-        return youtubeService.getSubscriptions(accessToken); // API 응답 내용
+        return youtubeService.getSubscriptions(accessToken, nextPageToken); // API 응답 내용
     }
 
     //채널 페이지별 영상 가져오기
@@ -68,10 +66,29 @@ public class YouTubeController {
             // 적절한 예외 처리 또는 로그 출력
             throw new IllegalStateException("OAuth2AuthorizedClient not found. Are you logged in?");
         }
-
         String accessToken = client.getAccessToken().getTokenValue();
 
         return youtubeService.getPageVideos(accessToken, channelId, nextPageToken);
+    }
+
+    //영상 정보 가져오기 및 저장
+    //http://localhost:8080/youtube/detail?videoId=FmaD_Jl_7YM
+    @GetMapping("/youtube/detail")
+    @ResponseBody
+    public String getDetailVideo(Authentication authentication, @RequestParam String videoId) {
+        OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
+        OAuth2AuthorizedClient client = authorizedClientService
+                .loadAuthorizedClient(
+                        oauthToken.getAuthorizedClientRegistrationId(),
+                        oauthToken.getName());
+        if (client == null) {
+            // 적절한 예외 처리 또는 로그 출력
+            throw new IllegalStateException("OAuth2AuthorizedClient not found. Are you logged in?");
+        }
+        String accessToken = client.getAccessToken().getTokenValue();
+
+        return youtubeService.getDetailVideo(accessToken, videoId);
+
     }
 
 

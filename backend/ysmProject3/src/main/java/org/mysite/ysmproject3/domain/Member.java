@@ -8,12 +8,20 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Member {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @SequenceGenerator(name = "mySequence", sequenceName = "member_seq", allocationSize = 1)
+    @Column(name = "MEMBER_ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "mySequence", sequenceName = "user_seq", allocationSize = 1)
     private Long id;
 
+    @Column(name = "NAME")
     private String name;
 
-    private Integer age;
+    @Column(name = "EMAIL")
+    private String email;
+
+    @Column(name = "PICTURE")
+    private String picture;
+
 }

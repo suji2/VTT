@@ -62,7 +62,7 @@ public class YoutubeService {
         return response.getBody();
     }
 
-    //구독아이디 리스트로 반환
+    //채널아이디 리스트로 반환
     public List<String> getSubscriptions(String accessToken, String nextPageToken) throws IOException, GeneralSecurityException {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
@@ -125,6 +125,7 @@ public class YoutubeService {
 
     //유튜브 댓글 가져오기
     //100개만 출력
+    //모든 댓글 출력되게끔 수정해야함
     public String getComments(String accessToken, String videoId) {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();

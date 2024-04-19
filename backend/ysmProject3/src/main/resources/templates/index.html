@@ -6,6 +6,8 @@
 </head>
 <body>
 <h1>Welcome <span th:text="${name}">User</span>!</h1>
+<h1>Welcome <span th:text="${email}">User</span>!</h1>
+<h1>Welcome <span th:text="${picture}">User</span>!</h1>
 <div>
     <!-- 로그아웃 폼을 POST 방식으로 변경 -->
     <form th:action="@{/logout}" method="post">

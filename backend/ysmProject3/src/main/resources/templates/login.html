@@ -2,13 +2,27 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Login Page</title>
+    <title>Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .login-container {
+            width: 300px;
+            margin: 100px auto;
+            padding: 20px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
-<h1>Login</h1>
-<div>
-    <!-- Google 로그인 URL -->
-    <a href="/oauth2/authorization/google">Login with Google</a>
+<div class="login-container">
+    <h2>Login</h2>
+    <form action="#" th:action="@{/oauth2/authorization/google}" method="post">
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block">Login with Google</button>
+        </div>
+    </form>
+    <p th:if="${message}" th:text="${message}"></p>
 </div>
 </body>
 </html>

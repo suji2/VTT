@@ -45,13 +45,22 @@ public class MemberService implements OAuth2UserService<OidcUserRequest, OidcUse
                 "picture", idToken.getClaimAsString("picture")
         ));
 
-        // DB에 사용자 정보 저장 또는 업데이트
-        Member member = new Member();
-        member.setName(userInfo.getFullName());
-        member.setEmail(userInfo.getEmail());
-        member.setPicture(userInfo.getPicture());
+        // 데이터베이스에서 기존 사용자 조회
+        Member member = memberRepository.findByEmail(userInfo.getEmail());
+        if (member == null) {
+            // 사용자가 데이터베이스에 존재하지 않는 경우, 새로운 Member 객체 생성
+            member = new Member();
+            member.setName(userInfo.getFullName());
+            member.setEmail(userInfo.getEmail());
+            member.setPicture(userInfo.getPicture());
+        } else {
+            // 데이터베이스에 사용자가 이미 존재하는 경우, 기존 정보 업데이트
+            member.setName(userInfo.getFullName());
+            member.setPicture(userInfo.getPicture());
+        }
         memberRepository.save(member);
 
+        // 새로운 OidcUser 객체 생성 및 반환
         return new DefaultOidcUser(Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")), idToken, userInfo);
     }
 }

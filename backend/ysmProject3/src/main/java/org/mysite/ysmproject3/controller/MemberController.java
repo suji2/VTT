@@ -16,12 +16,12 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping("/")
-    public String index(Model model, @AuthenticationPrincipal OAuth2User principal) {
-        if (principal != null) {
+    public String index(Model model, @AuthenticationPrincipal OAuth2User oAuth2User) {
+        if (oAuth2User != null) {
             // 인증된 사용자의 경우, 이름을 모델에 추가
-            model.addAttribute("name", principal.getAttribute("name"));
-            model.addAttribute("email", principal.getAttribute("email"));
-            model.addAttribute("picture", principal.getAttribute("picture"));
+            model.addAttribute("name", oAuth2User.getAttribute("name"));
+            model.addAttribute("email", oAuth2User.getAttribute("email"));
+            model.addAttribute("picture", oAuth2User.getAttribute("picture"));
         } else {
             model.addAttribute("name", "Guest");
             model.addAttribute("email", "Not Available");

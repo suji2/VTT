@@ -8,20 +8,23 @@ import lombok.Setter;
 @Table(name = "Video_Summary")
 @Getter
 @Setter
-public class VideoSummary {
+public class CaptionSummary {
 
     @Id
-    @Column(name = "Video_Summary_Num")
+    @Column(name = "Summary_Num")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "mySequence", sequenceName = "member_seq", allocationSize = 1)
     private Long videoSummaryNum;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "video_id")
     private Video video;
 
-    @Column(name = "text_Summary")
-    private String textSummary;
+    @Column(name = "caption")
+    private String caption;
+
+    @Column(name = "caption_summary")
+    private String captionSummary;
 
     // getters and setters
 }

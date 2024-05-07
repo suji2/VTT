@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface TextRepository extends JpaRepository<CaptionSummary, Long> {
+public interface CaptionSummaryRepository extends JpaRepository<CaptionSummary, Long> {
     Optional<CaptionSummary> findByVideoId(String videoId);
 }

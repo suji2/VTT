@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "voice")
+@Table(name = "comment_summary")
 @Getter
 @Setter
 public class CommentSummary {
@@ -13,17 +13,17 @@ public class CommentSummary {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @SequenceGenerator(name = "mySequence", sequenceName = "voice_seq", allocationSize = 1)
-    @Column(name = "voice_id")
-    private Long voiceId;
+    @Column(name = "summary_num")
+    private Long summaryNum;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "video_id")
     private Video video;
 
-    @Column(name = "conversion")
-    private String conversion;
+    @Column(name = "comment")
+    private String comment;
 
-    @Column(name = "voice_Url")
-    private String voiceUrl;
+    @Column(name = "comment_summary")
+    private String commentSummary;
 
 }

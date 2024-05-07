@@ -19,12 +19,12 @@ public class CaptionSummaryService {
         */
     }
 
-    // 저장된 요약 텍스트 가져오기
+    // DB에 저장된 자막 요약 가져오기
     public Optional<CaptionSummary> getSummary(String videoId) {
         return this.textRepository.findByVideoId(videoId);
     }
 
-    // 비디오 요약 하기
+    // 자막 요약 하기
     // 저장된 자막을 짧게 요약하는 메소드
     public void Summary(String videoId) {
         /*

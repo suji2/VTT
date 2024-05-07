@@ -14,13 +14,18 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/api/login/google") // CSRF 보호 비활성화
+                )
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/user/profile" ).permitAll()
                         .requestMatchers("/" ).permitAll()
+                        .requestMatchers("/verify" ).permitAll()
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/oauth2/authorization/google").permitAll()
                         .anyRequest().authenticated()
-                )
-                .oauth2Login(oauth2Login ->
+                );
+                /*.oauth2Login(oauth2Login ->
                         oauth2Login
                                 .loginPage("/login")
                                 .defaultSuccessUrl("/", true)  // 로그인 성공 후 리다이렉션 설정
@@ -30,7 +35,7 @@ public class SecurityConfig {
                         .logoutSuccessUrl("/") // 로그아웃 성공 시 리다이렉션할 URL
                         .invalidateHttpSession(true) // 세션 무효화
                         .deleteCookies("JSESSIONID", "remember-me") // JSESSIONID 쿠키 삭제
-                );
+                );*/
         return http.build();
     }
 }

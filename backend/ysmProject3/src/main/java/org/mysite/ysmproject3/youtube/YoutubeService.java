@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.mysite.ysmproject3.domain.Video;
+import org.mysite.ysmproject3.exception.CustomException;
 import org.mysite.ysmproject3.repository.VideoRepository;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
@@ -135,7 +137,6 @@ public class YoutubeService {
         }
     }
 
-
     //유튜브 댓글 가져오기
     //100개만 출력
     //모든 댓글 출력되게끔 수정해야함
@@ -147,13 +148,18 @@ public class YoutubeService {
 
         String url = String.format("https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&videoId=%s&textFormat=plainText&maxResults=100", videoId);
 
-        ResponseEntity<String> response = restTemplate.exchange(
-                url,
-                HttpMethod.GET,
-                entity,
-                String.class);
+        try {
+            ResponseEntity<String> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.GET,
+                    entity,
+                    String.class);
+            return response.getBody();
+        } catch (RestClientException e) {
+            // 로깅 및 사용자에게 친절한 에러 메시지 반환
+            throw new CustomException("Failed to retrieve comments due to an error: " + e.getMessage(), e);
+        }
 
-        return response.getBody();
     }
 
 }

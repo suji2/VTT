@@ -1,4 +1,4 @@
-import 'dart:async';
+
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +39,7 @@ class _MyinfoState extends State<Myinfo> {
                   onPressed: () {
                     // 로그아웃 버튼이 눌렸을 때 로그아웃 처리를 해줄 수 있습니다.
                     // 로그아웃 메서드 호출
+                    GoogleSignIn().signOut();
                     setState(() {
                       token = null;
                       isLoggedIn = false;
@@ -77,10 +78,10 @@ class _MyinfoState extends State<Myinfo> {
               onTap: () async {
                 // Google 로그인 처리
                 GoogleSignIn().signIn();
-                // await googleAuth.signIn();
-                // setState(() {
-                //   isLoggedIn = true;
-                // });
+                 await googleAuth.signIn();
+                 setState(() {
+                   isLoggedIn = true;
+                 });
               },
               child: Image.asset(
                 'assets/img/signGoogle.png',
@@ -94,7 +95,7 @@ class _MyinfoState extends State<Myinfo> {
             child: ElevatedButton(
               onPressed: () async {
                 // 토큰 값을 백엔드로 전송
-                //await toback.sendTokenToBackend(token);
+                await toback.fetchDataFromBackend(googleAuth.getAccessToken());
               },
               child: Text("통신"),
             ),

@@ -1,6 +1,5 @@
 package org.mysite.ysmproject3.youtube;
 
-import com.google.api.services.youtube.YouTube;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -21,9 +20,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.List;
-
 
 @RestController
 @RequiredArgsConstructor
@@ -36,7 +32,7 @@ public class YouTubeController {
     //http://localhost:8080/youtube/channel
     @GetMapping("/youtube/channel")
     @ResponseBody
-    public List<String> callYouTubeApi(Authentication authentication, @RequestParam String nextPageToken) throws IOException, GeneralSecurityException {
+    public String callYouTubeApi(Authentication authentication, @RequestParam(required = false) String nextPageToken) throws IOException, GeneralSecurityException {
         OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
         OAuth2AuthorizedClient client = authorizedClientService
                 .loadAuthorizedClient(
@@ -48,6 +44,8 @@ public class YouTubeController {
         }
 
         String accessToken = client.getAccessToken().getTokenValue();
+
+        System.out.println("토큰값: " + oauthToken);
 
         return youtubeService.getSubscriptions(accessToken, nextPageToken); // API 응답 내용
     }
@@ -72,7 +70,7 @@ public class YouTubeController {
     }
 
     //영상 정보 가져오기 및 저장
-    //http://localhost:8080/youtube/detail?videoId=FmaD_Jl_7YM
+    //http://localhost:8080/youtube/detail?videoId=NNZ3dWqF7u0
     @GetMapping("/youtube/detail")
     @ResponseBody
     public String getDetailVideo(Authentication authentication, @RequestParam String videoId) {
@@ -90,10 +88,6 @@ public class YouTubeController {
         return youtubeService.getDetailVideo(accessToken, videoId);
 
     }
-
-
-
-
 
     //유튜브 댓글 가져오기
     //http://localhost:8080/youtube/comments?videoId=1ifSAFCGiX8

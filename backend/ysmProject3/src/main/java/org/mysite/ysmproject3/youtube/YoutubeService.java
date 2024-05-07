@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -48,6 +49,11 @@ public class YoutubeService {
         JSONObject smThumbnail = thumbnails.getJSONObject("default");
         JSONObject bigThumbnail = thumbnails.getJSONObject("high");
 
+        // 데이터베이스에서 비디오ID로 조회
+        Optional<Video> existingVideo = videoRepository.findById(id.getString("videoId"));
+        if (existingVideo.isPresent()) {
+            return response.getBody(); // 이미 데이터베이스에 존재하는 경우
+        }
 
         Video video = new Video();
         video.setId(id.getString("videoId"));
@@ -63,21 +69,26 @@ public class YoutubeService {
     }
 
     //채널아이디 리스트로 반환
-    public List<String> getSubscriptions(String accessToken, String nextPageToken) throws IOException, GeneralSecurityException {
+    public String getSubscriptions(String accessToken, String nextPageToken) throws IOException, GeneralSecurityException {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(accessToken);
         HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
 
-        String url = String.format("https://www.googleapis.com/youtube/v3/subscriptions?part=snippet&mine=true&maxResults=50&pageToken%s", nextPageToken);
+        String urlTemplate = "https://www.googleapis.com/youtube/v3/subscriptions?part=snippet&mine=true&maxResults=50";
+        if (nextPageToken != null && !nextPageToken.isEmpty()) {
+            urlTemplate += "&pageToken=" + nextPageToken;  // nextPageToken을 URL에 추가
+        }
 
         ResponseEntity<String> response = restTemplate.exchange(
-                url,
+                urlTemplate,
                 HttpMethod.GET,
                 entity,
                 String.class);
 
-        // JSON 응답 파싱
+        return response.getBody();
+
+        /*// JSON 응답 파싱
         JSONObject jsonResponse = new JSONObject(response.getBody());
         JSONArray items = jsonResponse.getJSONArray("items");
         List<String> subscriptionsId = new ArrayList<>();
@@ -88,7 +99,7 @@ public class YoutubeService {
             JSONObject resourceId = snippet.getJSONObject("resourceId");
             subscriptionsId.add(resourceId.getString("channelId"));  // id 값만 리스트에 추가
         }
-        return subscriptionsId;
+        return subscriptionsId;*/
     }
 
     //채널 동영상 출력
@@ -98,8 +109,9 @@ public class YoutubeService {
         headers.setBearerAuth(accessToken);
         HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
 
-        if (nextPageToken != "") {
-
+        // nextPageToken이 null이거나 빈 문자열인지 체크
+        if (nextPageToken != null && !nextPageToken.isEmpty()) {
+            // nextPageToken이 제공된 경우
             String url = String.format("https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&channelId=%s&pageToken=%s", channelId, nextPageToken);
 
             ResponseEntity<String> response = restTemplate.exchange(
@@ -110,6 +122,7 @@ public class YoutubeService {
 
             return response.getBody();
         } else {
+            // nextPageToken이 null이거나 빈 문자열인 경우
             String url = String.format("https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&channelId=%s", channelId);
 
             ResponseEntity<String> response = restTemplate.exchange(
@@ -120,8 +133,8 @@ public class YoutubeService {
 
             return response.getBody();
         }
-
     }
+
 
     //유튜브 댓글 가져오기
     //100개만 출력

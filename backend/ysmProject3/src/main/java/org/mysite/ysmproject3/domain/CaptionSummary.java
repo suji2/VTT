@@ -5,20 +5,16 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "text")
+@Table(name = "Video_Summary")
 @Getter
 @Setter
-public class Text {
+public class VideoSummary {
 
     @Id
-    @Column(name = "text_Num")
+    @Column(name = "Video_Summary_Num")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "mySequence", sequenceName = "member_seq", allocationSize = 1)
-    private Long textNum;
-
-    @ManyToOne
-    @JoinColumn(name = "voice_id")
-    private Voice voice;
+    private Long videoSummaryNum;
 
     @ManyToOne
     @JoinColumn(name = "video_id")

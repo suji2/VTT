@@ -8,7 +8,7 @@ import lombok.Setter;
 @Table(name = "voice")
 @Getter
 @Setter
-public class Voice {
+public class CommentSummary {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

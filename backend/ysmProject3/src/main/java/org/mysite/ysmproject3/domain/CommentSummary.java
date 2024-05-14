@@ -5,25 +5,25 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "comment_summary")
+@Table(name = "COMMENT_SUMMARY")
 @Getter
 @Setter
 public class CommentSummary {
 
     @Id
+    @Column(name = "SUMMARY_NUM")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @SequenceGenerator(name = "mySequence", sequenceName = "voice_seq", allocationSize = 1)
-    @Column(name = "summary_num")
     private Long summaryNum;
 
-    @OneToOne
-    @JoinColumn(name = "video_id")
-    private Video video;
-
-    @Column(name = "comment")
+    @Column(name = "COMMENT")
     private String comment;
 
-    @Column(name = "comment_summary")
+    @Column(name = "COMMENT_SUMMARY")
     private String commentSummary;
+
+    @OneToOne
+    @JoinColumn(name = "VIDEO_ID")
+    private Video video;
 
 }

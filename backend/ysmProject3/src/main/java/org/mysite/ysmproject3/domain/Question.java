@@ -1,12 +1,12 @@
 package org.mysite.ysmproject3.domain;
 
 import jakarta.persistence.*;
-import lombok.Cleanup;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 
-import java.util.Date;
-
+import java.time.LocalDateTime;
 @Entity
 @Table(name = "question")
 @Getter
@@ -25,14 +25,16 @@ public class Question {
     @Column(name = "CONTENT")
     private String content;
 
+    @CreationTimestamp
     @Column(name = "CREATION_DATE")
-    private Date createDate;
+    private LocalDateTime createDate;
 
     @Column(name = "ANSWER_Y_N")
+    @ColumnDefault("N")
     private String answerYN;
 
-    @Column(name = "SECRET")
-    private String secret;
+    @Column(name = "SECRET_Y_N")
+    private String secretYN;
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")

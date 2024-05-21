@@ -42,8 +42,29 @@ public class QuestionService {
             throw new DataNotFoundException("질문을 찾을 수 없음");
         }
     }
+    // 질문 수정
+    public Question updateQuestion(Long id, String title, String content, String secretYN) {
+        Optional<Question> questionOptional = this.questionRepository.findById(id);
+        if (questionOptional.isPresent()) {
+            Question question = questionOptional.get();
+            question.setTitle(title);
+            question.setContent(content);
+            question.setSecretYN(secretYN);
 
-    //질문 수정
+            this.questionRepository.save(question);
+            return question;
+        } else {
+            throw new DataNotFoundException("질문을 찾을 수 없음");
+        }
+    }
 
-    //질문 삭제
+    // 질문 삭제
+    public void deleteQuestion(Long id) {
+        Optional<Question> questionOptional = this.questionRepository.findById(id);
+        if (questionOptional.isPresent()) {
+            this.questionRepository.deleteById(id);
+        } else {
+            throw new DataNotFoundException("질문을 찾을 수 없음");
+        }
+    }
 }

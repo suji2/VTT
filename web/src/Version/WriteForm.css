@@ -14,10 +14,11 @@
   align-items: center;
   border-bottom: 2px solid #EDEDED; /* 올바른 색상 코드 형식 */
 }
+
 .nav-title {
   text-decoration: none;
   color: black; /* 텍스트 색상 설정 */
-  font-size: 16px !important
+  font-size: 16px !important;
 }
 
 .nav-links {
@@ -42,13 +43,13 @@
   text-decoration: none;
 }
 
-.search-container {
+.form-container {
   display: flex;
-  justify-content: center;
-  padding: 20px;
+  justify-content: center; /* 화면 중앙에 정렬 */
+  align-items: center;
+  flex: 1; /* 화면을 채우도록 설정 */
 }
 
-/* 추가된 스타일 */
 .WriteForm form {
   display: flex;
   flex-direction: column;
@@ -61,13 +62,27 @@
 }
 
 .WriteForm input[type="text"],
-.WriteForm input[type="password"], /* 비밀번호 입력 필드에 대한 스타일 추가 */
 .WriteForm textarea {
   padding: 8px;
   border: 1px solid #ddd;
   border-radius: 4px;
   margin-bottom: 20px; /* 각 요소의 하단 간격 조정 */
   width: 100%; /* 폼 너비에 맞춤 */
+}
+
+.content-container {
+  position: relative; /* 카메라 버튼을 넣기 위해 상대 위치 설정 */
+}
+
+.camera-button {
+  position: absolute;
+  right: -10px; /* 텍스트 영역 바로 외부의 위치를 적절히 조정 */
+  bottom: -10px; /* 텍스트 영역 아래로 적절히 조정 */
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 24px;
+  color: #666; /* 버튼 색상 */
 }
 
 .WriteForm button[type="submit"] {

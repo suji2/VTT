@@ -7,6 +7,7 @@ import About from './ABOUT/About';
 import Version from './Version/Version';
 import WriteForm from './Version/WriteForm';
 import Login from './LOGIN/login';
+import UserProfile from './LOGIN/UserProfile';
 
 function App() {
   const [data, setData] = useState([]);
@@ -28,7 +29,8 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/version" element={<Version />} />
         <Route path="/write" element={<WriteForm />} />
-        <Route path="/login" element={<Login />} /> {/* 'Login' 컴포넌트 이름을 대문자로 수정 */}
+        <Route path="/Login" element={<Login />} />
+        <Route path="/userprofile" element={<UserProfile />} />
       </Routes>
     </Router>
   );

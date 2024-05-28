@@ -16,8 +16,8 @@ public class CommentSummary {
     @SequenceGenerator(name = "mySequence", sequenceName = "voice_seq", allocationSize = 1)
     private Long summaryNum;
 
-    @Column(name = "COMMENT")
-    private String comment;
+    @Column(name = "COMMENT_LIST")
+    private String commentList;
 
     @Column(name = "COMMENT_SUMMARY")
     private String commentSummary;

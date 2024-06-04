@@ -12,6 +12,7 @@ function UserProfile() {
         <div>
           <p>Name: {user.name}</p>
           <p>Email: {user.email}</p>
+          {user.picture && <img src={user.picture} alt="Profile" />}
         </div>
       ) : (
         <p>No user data available.</p>

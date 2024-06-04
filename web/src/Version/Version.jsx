@@ -1,22 +1,38 @@
-import React from 'react';
-import { NavLink, useNavigate } from 'react-router-dom'; // useNavigate가 정확히 import되었는지 확인하세요.
+import React, { useState, useEffect } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 import './Version.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 function Version() {
-  const [searchTerm, setSearchTerm] = React.useState("");
-  const navigate = useNavigate(); // 여기에서 useNavigate를 호출하여 navigate 함수를 생성합니다.
+  const [searchTerm, setSearchTerm] = useState("");
+  const [questions, setQuestions] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchQuestions();
+  }, []);
+
+  const fetchQuestions = async () => {
+    try {
+      const response = await fetch('http://192.168.34.10:8080/api/questions'); // 백엔드 URL로 변경
+      const data = await response.json();
+      setQuestions(data);
+    } catch (error) {
+      console.error('Error fetching questions:', error);
+    }
+  };
 
   // 검색 핸들러 함수
   const handleSearch = (e) => {
     e.preventDefault();
     console.log("검색:", searchTerm);
+    // 검색 로직 추가
   };
 
-  // Version 컴포넌트 내의 handleWrite 함수
+  // 글쓰기 버튼 클릭 핸들러
   const handleWrite = () => {
-    navigate('/write'); // '/version/write' 대신 '/write'를 사용합니다.
+    navigate('/write');
   };
   
   return (
@@ -52,6 +68,14 @@ function Version() {
           <div className="table-cell">작성일</div>
           <div className="table-cell">진행상황</div>
         </div>
+        {questions.map((question, index) => (
+          <div key={question.question_num} className="table-row">
+            <div className="table-cell">{index + 1}</div>
+            <div className="table-cell">{question.title}</div>
+            <div className="table-cell">{new Date(question.createDate).toLocaleDateString()}</div>
+            <div className="table-cell">{question.answerYN}</div>
+          </div>
+        ))}
       </div>
     </div>
   );

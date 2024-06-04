@@ -6,27 +6,50 @@ import { faCamera } from '@fortawesome/free-solid-svg-icons';
 
 function WriteForm() {
   // 각 필드별로 상태 설정
-  const [password, setPassword] = useState('');
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [file, setFile] = useState(null);
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // 저장 확인
     const isConfirmed = window.confirm("저장하시겠습니까?");
 
     if (isConfirmed) {
-      // 확인 시 로직 처리
-      console.log("Submitted: ", { password, title, content });
-      window.alert("저장 완료");
-      navigate(-1); // 이전 페이지로 이동
+      try {
+        // 데이터 전송을 위한 FormData 생성
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('content', content);
+        if (file) {
+          formData.append('file', file);
+        }
+
+        // 백엔드에 데이터 전송
+        const response = await fetch('http://192.168.34.10:8080/api/questions', { // 백엔드 URL로 변경
+          method: 'POST',
+          body: formData,
+        });
+
+        if (response.ok) {
+          // 저장 완료 시 이전 페이지로 이동
+          window.alert("저장 완료");
+          navigate('/version'); // Q&A 페이지로 이동
+        } else {
+          // 저장 실패 시 에러 메시지 표시
+          window.alert("저장 실패");
+        }
+      } catch (error) {
+        console.error("Error saving data:", error);
+        window.alert("저장 중 오류가 발생했습니다");
+      }
     } else {
       // 취소 시 알림
       window.alert("취소됐습니다");
-      navigate(-1); // 취소 시에도 이전 페이지로 이동
+      navigate('/version'); // Q&A 페이지로 이동
     }
   };
 
@@ -35,10 +58,9 @@ function WriteForm() {
   };
 
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      console.log("Selected file:", file);
-      // You can add further processing of the selected file here
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      setFile(selectedFile);
     }
   };
 

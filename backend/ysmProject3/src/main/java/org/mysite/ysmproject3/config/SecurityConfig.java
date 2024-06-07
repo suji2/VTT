@@ -14,8 +14,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/api/login/google") // CSRF 보호 비활성화
+                )
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/user/profile" ).permitAll()
                         .requestMatchers("/" ).permitAll()
+                        .requestMatchers("/verify" ).permitAll()
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/oauth2/authorization/google").permitAll()
                         .anyRequest().authenticated()

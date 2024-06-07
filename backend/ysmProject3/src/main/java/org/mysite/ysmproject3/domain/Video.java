@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
+@Table(name = "VIDEO")
 @Getter
 @Setter
 public class Video {
@@ -28,6 +29,6 @@ public class Video {
     @Column(name = "SM_THUMBNAIL")
     private String smThumbnail;
 
-    @Column(name = "BIG_THUMBNAIL1")
+    @Column(name = "BIG_THUMBNAIL")
     private String bigThumbnail;
 }

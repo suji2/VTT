@@ -1,25 +1,32 @@
 package org.mysite.ysmproject3.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.mysite.ysmproject3.domain.Question;
+import org.mysite.ysmproject3.domain.Answer;
+import org.mysite.ysmproject3.domain.Member;
 import org.mysite.ysmproject3.service.AnswerService;
-import org.mysite.ysmproject3.service.QuestionService;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-@RequiredArgsConstructor
+import java.util.List;
+
 @RestController
+@RequiredArgsConstructor
+@RequestMapping("/answer")
 public class AnswerController {
-
-    private final QuestionService questionService;
     private final AnswerService answerService;
 
-    @PostMapping("/qna/answer/{id}")
-    public String createAnswer(@PathVariable("id") Long id, @RequestParam(value = "text") String text) {
-        Question question = this.questionService.getQuestion(id);
-        this.answerService.create(question, text);
-        return "redirect:/qna/detail" + id;
+    // 답변 등록
+    //http://localhost:8080/answer/create?title=MyTitle&content=MyContent&member=1&questionNum=1
+    @PostMapping("/create")
+    public Answer createAnswer(@RequestParam String title,
+                               @RequestParam String content,
+                               @RequestParam Member member,
+                               @RequestParam Long questionNum) {
+        return answerService.createAnswer(title, content, member, questionNum);
+    }
+
+    //http://localhost:8080/answer/question/{questionNum}
+    @GetMapping("/question/{questionNum}")
+    public List<Answer> getAnswersByQuestionNum(@PathVariable Long questionNum) {
+        return answerService.getAnswersByQuestionNum(questionNum);
     }
 }

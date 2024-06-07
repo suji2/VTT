@@ -1,64 +1,49 @@
 package org.mysite.ysmproject3.controller;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.mysite.ysmproject3.domain.Answer;
 import org.mysite.ysmproject3.domain.Question;
-import org.mysite.ysmproject3.form.QuestionForm;
-import org.mysite.ysmproject3.service.AnswerService;
 import org.mysite.ysmproject3.service.QuestionService;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
 public class QuestionController {
-
     private final QuestionService questionService;
-    private final AnswerService answerService;
 
-    @GetMapping("/qna/list")
+    // 질문 목록 조회
+    //http://localhost:8080/question
+    @GetMapping("/question")
     @ResponseBody
-    public List<Question> questions() {
+    public List<Question> getAllQuestion() {
         return questionService.getAllQuestion();
     }
 
-    @GetMapping("/qna/detail/{id}")
+    //단일 질문 조회
+    @GetMapping("/question/{id}")
     @ResponseBody
-    public Answer Answers(@PathVariable("id") Long id) {
-        Optional<Answer> optionalAnswer = answerService.getAnswer(id);
-        return optionalAnswer.orElse(null);
+    public Question getQuestionById(@PathVariable Long id) {
+        return questionService.getQuestion(id);
     }
 
-    //TEST
-    @GetMapping(value = "/question/detail/{id}")
+    // 질문 수정
+    //http://localhost:8080/question/{id}
+    @PutMapping("/question/{id}")
     @ResponseBody
-    public Question detail(@PathVariable("id") Long id) {
-        Question question = this.questionService.getQuestion(id);
-        return question;
+    public Question updateQuestion(@PathVariable Long id,
+                                   @RequestParam String title,
+                                   @RequestParam String content,
+                                   @RequestParam String secretYN) {
+        return questionService.updateQuestion(id, title, content, secretYN);
     }
 
-//    @PostMapping("/qna/question")
-//    public String createQuestion() {
-//
-//    }
-
-//    @GetMapping("/qna/question")
-//    public AnswerForm createQuestion(AnswerForm answerForm) {
-//        return answerForm;
-//    }
-    @PostMapping("/qna/question")
-    public String createQuestion(@Valid QuestionForm questionForm, BindingResult bindingResult, Principal principal) {
-        if (bindingResult.hasErrors()) {
-            return "redirect:/qna/question";
-        }
-        this.questionService.create(questionForm.getPassword(), questionForm.getName(),questionForm.getSubject(), questionForm.getText());
-        return "redirect:/qna/list";
+    //질문 삭제
+    //http://localhost:8080/question/{id}
+    @DeleteMapping("/question/{id}")
+    @ResponseBody
+    public void deleteQuestion(@PathVariable Long id) {
+        questionService.deleteQuestion(id);
     }
-
 
 }

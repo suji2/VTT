@@ -20,7 +20,7 @@ public class VideoController {
     //전체 비디오 조회
     @GetMapping("/videos")
     @ResponseBody
-    public List<Video> video(Model model) {
+    public List<Video> video() {
         List<Video> result = videoService.getAllVideo();
         System.out.println(result);
         return result;

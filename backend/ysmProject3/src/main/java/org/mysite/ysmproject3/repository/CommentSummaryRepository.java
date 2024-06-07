@@ -1,9 +1,9 @@
 package org.mysite.ysmproject3.repository;
 
-import org.mysite.ysmproject3.domain.Question;
+import org.mysite.ysmproject3.domain.CommentSummary;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface QuestionRepository extends JpaRepository<Question, Long> {
+public interface CommentSummaryRepository extends JpaRepository<CommentSummary, Long> {
 }

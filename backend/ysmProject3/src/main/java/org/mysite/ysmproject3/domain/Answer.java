@@ -1,35 +1,42 @@
 package org.mysite.ysmproject3.domain;
 
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
-@Table(name = "answer")
+@Table(name = "ANSWER")
 @Getter
 @Setter
 public class Answer {
 
     @Id
-    @Column(name = "answer_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "ANSWER_NUM")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @SequenceGenerator(name = "mySequence", sequenceName = "answer_seq", allocationSize = 1)
-    private Long answerId;
+    private Long answer_num;
 
-    @Column(name = "answer_text")
-    private String text;
+    @Column(name = "TITLE")
+    private String title;
 
-    @Column(name = "answer_date")
-    private LocalDateTime answer_date;
+    @Column(name = "CONTENT")
+    private String content;
 
-    @Column(name = "modified_date")
-    private LocalDateTime modified_date;
+    @CreationTimestamp
+    @Column(name = "ANSWER_DATE")
+    private LocalDateTime answerDate;
 
     @OneToOne
-    @JoinColumn(name = "question_id")
+    @JoinColumn(name = "MEMBER_ID")
+    private Member member;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "QUESTION_NUM")
     private Question question;
+
 
 }

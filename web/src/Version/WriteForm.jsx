@@ -1,29 +1,66 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
-import './WriteForm.css'
+import './WriteForm.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCamera } from '@fortawesome/free-solid-svg-icons';
 
 function WriteForm() {
   // 각 필드별로 상태 설정
-  const [password, setPassword] = useState('');
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [file, setFile] = useState(null);
   const navigate = useNavigate();
+  const fileInputRef = useRef(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // 저장 확인
     const isConfirmed = window.confirm("저장하시겠습니까?");
 
     if (isConfirmed) {
-      // 확인 시 로직 처리
-      console.log("Submitted: ", { password, title, content });
-      window.alert("저장 완료");
-      navigate(-1); // 이전 페이지로 이동
+      try {
+        // 데이터 전송을 위한 FormData 생성
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('content', content);
+        if (file) {
+          formData.append('file', file);
+        }
+
+        // 백엔드에 데이터 전송
+        const response = await fetch('http://192.168.34.10:8080/api/questions', { // 백엔드 URL로 변경
+          method: 'POST',
+          body: formData,
+        });
+
+        if (response.ok) {
+          // 저장 완료 시 이전 페이지로 이동
+          window.alert("저장 완료");
+          navigate('/version'); // Q&A 페이지로 이동
+        } else {
+          // 저장 실패 시 에러 메시지 표시
+          window.alert("저장 실패");
+        }
+      } catch (error) {
+        console.error("Error saving data:", error);
+        window.alert("저장 중 오류가 발생했습니다");
+      }
     } else {
       // 취소 시 알림
       window.alert("취소됐습니다");
-      navigate(-1); // 취소 시에도 이전 페이지로 이동
+      navigate('/version'); // Q&A 페이지로 이동
+    }
+  };
+
+  const handleCameraButtonClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      setFile(selectedFile);
     }
   };
 
@@ -38,38 +75,42 @@ function WriteForm() {
           <NavLink to="/login" className={({ isActive }) => isActive ? "nav-link active-link" : "nav-link"}>Login</NavLink>
         </nav>
       </header>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="password">비밀번호</label>
-          <input
-            type="password" // 비밀번호 입력을 위한 타입 변경
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="title">제목</label>
-          <input
-            type="text"
-            id="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="content">내용</label>
-          <textarea
-            id="content"
-            rows="10"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          ></textarea>
-        </div>
-        <div>
-          <button type="submit">저장</button>
-        </div>
-      </form>
+      <div className="form-container">
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="title">제목</label>
+            <input
+              type="text"
+              id="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+          </div>
+          <div className="content-container">
+            <label htmlFor="content">내용</label>
+            <textarea
+              id="content"
+              rows="10"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              style={{ resize: 'none' }} // 내용 입력 칸 크기 변경 불가하게 설정
+            ></textarea>
+            <button type="button" className="camera-button" onClick={handleCameraButtonClick}>
+              <FontAwesomeIcon icon={faCamera} />
+            </button>
+            <input
+              type="file"
+              accept="image/*" // 이미지 파일만 선택 가능
+              ref={fileInputRef}
+              style={{ display: 'none' }}
+              onChange={handleFileChange}
+            />
+          </div>
+          <div>
+            <button type="submit">저장</button>
+          </div>
+        </form>
+      </div>
       <div className="footer-links">
         <a href="https://github.com/suji2/VTT.git" target="_blank" rel="noopener noreferrer">
           <img src="/git.png" alt="GitHub" className="footer-icon" />

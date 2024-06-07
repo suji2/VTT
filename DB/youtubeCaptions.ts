@@ -2,7 +2,7 @@ const fs = require('fs');
 const getSubtitles = require('youtube-captions-scraper').getSubtitles;
 
 getSubtitles({
-  videoID: 'VxLF9cixOcE', // youtube video id
+  videoID: 'QdSCKIyGds0', // youtube video id
   lang: 'ko' // default: `en`
 }).then(function(captions: any[]) {
   // captions 배열을 텍스트로 변환하여 파일에 저장

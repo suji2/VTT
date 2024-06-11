@@ -1,8 +1,8 @@
 package org.mysite.ysmproject3.service;
 
 import lombok.RequiredArgsConstructor;
+import org.mysite.ysmproject3.domain.Member;
 import org.mysite.ysmproject3.domain.Question;
-import org.mysite.ysmproject3.domain.UserInfoEntity;
 import org.mysite.ysmproject3.exception.DataNotFoundException;
 import org.mysite.ysmproject3.repository.QuestionRepository;
 import org.springframework.stereotype.Service;
@@ -16,12 +16,12 @@ public class QuestionService {
     private final QuestionRepository questionRepository;
 
     //질문 등록
-    public List<Question> createQuestion(String title, String content, String secretYN, UserInfoEntity userInfoEntity) {
+    public List<Question> createQuestion(String title, String content, String secretYN, Member member) {
         Question question = new Question();
         question.setTitle(title);
         question.setContent(content);
         question.setSecretYN(secretYN);
-        question.setUserInfoEntity(userInfoEntity);
+        question.setMember(member);
 
         this.questionRepository.save(question);
 

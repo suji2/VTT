@@ -37,7 +37,7 @@ public class Question {
     private String secretYN;
 
     @ManyToOne
-    @JoinColumn(name = "CLIENT_USER_ID")
-    private UserInfoEntity userInfoEntity;
+    @JoinColumn(name = "MEMBER_ID")
+    private Member member;
 
 }

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import org.mysite.ysmproject3.youtube.YoutubeService;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -11,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
-import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -32,6 +32,7 @@ public class YouTubeController {
     @ResponseBody
     public String callYouTubeApi(Authentication authentication, @RequestParam(required = false) String nextPageToken, @RequestParam String token) throws IOException, GeneralSecurityException {
 
+        System.out.println("토큰: " + token);
         OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
         OAuth2AuthorizedClient client = authorizedClientService
                 .loadAuthorizedClient(
@@ -42,6 +43,7 @@ public class YouTubeController {
             throw new IllegalStateException("OAuth2AuthorizedClient not found. Are you logged in?");
         }
 
+//        String accessToken = client.getAccessToken().getTokenValue();
         String accessToken = token;
 
         System.out.println(youtubeService.getSubscriptions(accessToken, nextPageToken));
@@ -93,29 +95,39 @@ public class YouTubeController {
     @GetMapping("/youtube/comments")
     @ResponseBody
     public String getVideoComments(Authentication authentication, @RequestParam String videoId) throws IOException, GeneralSecurityException {
-        System.out.println("videoId: " + videoId);
-        System.out.println("authentication: " + authentication);
+        OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
+        OAuth2AuthorizedClient client = authorizedClientService
+                .loadAuthorizedClient(
+                        oauthToken.getAuthorizedClientRegistrationId(),
+                        oauthToken.getName());
 
-        // 변경된 부분: OAuth2AuthenticationToken 타입인지 확인하는 로직 추가
-        if (authentication instanceof OAuth2AuthenticationToken) {
-            OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
-            OAuth2AuthorizedClient client = authorizedClientService
-                    .loadAuthorizedClient(
-                            oauthToken.getAuthorizedClientRegistrationId(),
-                            oauthToken.getName());
-
-            if (client == null) {
-                throw new IllegalStateException("OAuth2AuthorizedClient not found. Are you logged in?");
-            }
-
-            String accessToken = client.getAccessToken().getTokenValue();
-            System.out.println(accessToken);
-
-            return youtubeService.getComments(accessToken, videoId);
-        } else {
-            throw new IllegalStateException("Authentication is not an OAuth2AuthenticationToken. Are you logged in with OAuth2?");
+        if (client == null) {
+            throw new IllegalStateException("OAuth2AuthorizedClient not found. Are you logged in?");
         }
+
+        String accessToken = client.getAccessToken().getTokenValue();
+
+//        RestTemplate restTemplate = new RestTemplate();
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setBearerAuth(accessToken);
+//        HttpEntity<?> entity = new HttpEntity<>(headers);
+
+        return youtubeService.getComments(accessToken, videoId);
     }
+
+
+
+
+    @GetMapping("/test")
+    @ResponseBody
+    public String connectTest(@RequestParam String token) {
+        String accessToken = token;
+
+        System.out.println("토큰: " + accessToken);
+        return "성공";
+    }
+
+
 
 
 

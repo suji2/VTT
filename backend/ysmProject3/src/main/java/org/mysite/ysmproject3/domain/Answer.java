@@ -31,8 +31,8 @@ public class Answer {
     private LocalDateTime answerDate;
 
     @OneToOne
-    @JoinColumn(name = "CLIENT_USER_ID")
-    private UserInfoEntity userInfoEntity;
+    @JoinColumn(name = "MEMBER_ID")
+    private Member member;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "QUESTION_NUM")

@@ -11,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -27,8 +28,9 @@ public class YoutubeService {
 
     private final VideoRepository videoRepository;
 
+
     //특정 영상 정보 및 저장
-    public String getDetailVideo(String accessToken, @RequestParam String videoId) {
+    public String getDetailVideo(String accessToken, String videoId) {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(accessToken);

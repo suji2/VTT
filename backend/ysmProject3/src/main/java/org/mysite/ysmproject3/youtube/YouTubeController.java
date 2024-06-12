@@ -118,6 +118,18 @@ public class YouTubeController {
 
 
 
+    @GetMapping("/test")
+    @ResponseBody
+    public String connectTest(@RequestParam String token) {
+        String accessToken = token;
+
+        System.out.println("토큰: " + accessToken);
+        return "성공";
+    }
+
+
+
+
 
 
 

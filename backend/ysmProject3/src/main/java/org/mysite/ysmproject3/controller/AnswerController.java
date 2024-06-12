@@ -3,7 +3,6 @@ package org.mysite.ysmproject3.controller;
 import lombok.RequiredArgsConstructor;
 import org.mysite.ysmproject3.domain.Answer;
 import org.mysite.ysmproject3.domain.Member;
-import org.mysite.ysmproject3.domain.UserInfoEntity;
 import org.mysite.ysmproject3.service.AnswerService;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,9 +19,9 @@ public class AnswerController {
     @PostMapping("/create")
     public Answer createAnswer(@RequestParam String title,
                                @RequestParam String content,
-                               @RequestParam UserInfoEntity userInfoEntity,
+                               @RequestParam Member member,
                                @RequestParam Long questionNum) {
-        return answerService.createAnswer(title, content, userInfoEntity, questionNum);
+        return answerService.createAnswer(title, content, member, questionNum);
     }
 
     //http://localhost:8080/answer/question/{questionNum}

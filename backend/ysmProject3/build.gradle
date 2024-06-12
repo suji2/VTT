@@ -16,55 +16,30 @@ repositories {
 }
 
 dependencies {
-    // Spring Boot starters
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
+    // 구글 로그인
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
 
-    // Security and OAuth2
-    implementation 'org.springframework.security:spring-security-oauth2-jose'
-    implementation 'org.springframework.security:spring-security-oauth2-core'
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
-    // JWT
-    implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
-    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'
-    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.2'
-
-    // JSON
     implementation 'org.json:json:20210307'
 
-    // Google API Client
-//    implementation 'com.google.api-client:google-api-client:1.31.5'
-//    implementation 'com.google.oauth-client:google-oauth-client-jetty:1.31.5'
-//    implementation 'com.google.auth:google-auth-library-oauth2-http:0.25.2'
-//    implementation 'com.google.http-client:google-http-client-jackson2:1.39.2'
-
-    implementation 'com.google.api-client:google-api-client:1.30.10'
-    implementation 'com.google.oauth-client:google-oauth-client-jetty:1.33.0'
-    implementation 'com.google.http-client:google-http-client-jackson2:1.41.4'
-    implementation 'com.google.auth:google-auth-library-oauth2-http:0.25.2'
-
+    //유튜브
+    implementation 'com.google.api-client:google-api-client:1.31.5'
+    implementation 'com.google.oauth-client:google-oauth-client-jetty:1.31.5'
     implementation 'com.google.apis:google-api-services-youtube:v3-rev222-1.25.0'
+    implementation 'com.google.auth:google-auth-library-oauth2-http:0.25.2'
+    implementation 'com.google.http-client:google-http-client-jackson2:1.39.2'
 
-    // Database
-    runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
-
-    // Development tools
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
-
-    // Lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-
-    // Testing
+    runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.security:spring-security-test'
-
-    // H2 Database (if needed)
-    runtimeOnly 'com.h2database:h2:2.1.212'
 }
 
 tasks.named('test') {

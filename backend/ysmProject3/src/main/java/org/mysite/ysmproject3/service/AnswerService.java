@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.mysite.ysmproject3.domain.Answer;
 import org.mysite.ysmproject3.domain.Member;
 import org.mysite.ysmproject3.domain.Question;
-import org.mysite.ysmproject3.domain.UserInfoEntity;
 import org.mysite.ysmproject3.exception.DataNotFoundException;
 import org.mysite.ysmproject3.repository.AnswerRepository;
 import org.mysite.ysmproject3.repository.QuestionRepository;
@@ -19,7 +18,7 @@ public class AnswerService {
     private final QuestionRepository questionRepository;
 
     // 답변 등록 -> 질문게시판의 답변 여부도 Y로 수정
-    public Answer createAnswer(String title, String content, UserInfoEntity userInfoEntity, Long questionNum) {
+    public Answer createAnswer(String title, String content, Member member, Long questionNum) {
         Question question = questionRepository.findById(questionNum)
                 .orElseThrow(() -> new DataNotFoundException("질문을 찾을 수 없음"));
 
@@ -27,7 +26,7 @@ public class AnswerService {
         Answer answer = new Answer();
         answer.setTitle(title);
         answer.setContent(content);
-        answer.setUserInfoEntity(userInfoEntity);
+        answer.setMember(member);
         answer.setQuestion(question);
 
         // 답변 저장

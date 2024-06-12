@@ -3,7 +3,7 @@ import './LoginButton.css';
 
 const LoginButton = () => {
   const handleLoginClick = () => {
-    window.location.href = 'http://192.168.0.56:8080/oauth2/authorization/google'; // 백엔드 OAuth2 로그인 엔드포인트로 리디렉션
+    window.location.href = 'http://localhost:8080/oauth2/authorization/google'; // 백엔드 OAuth2 로그인 엔드포인트로 리디렉션
   };
 
   return (

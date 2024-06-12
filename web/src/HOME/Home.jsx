@@ -26,7 +26,6 @@ const Home = () => {
       try {
         const accessToken = Cookies.get('ACCESS_TOKEN');
         const response = await axios.get('http://localhost:8080/youtube/channel', {
-          params: { token: accessToken },
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -35,8 +34,7 @@ const Home = () => {
 
         console.log('Subscriptions response:', response.data); // 응답 데이터 로그 추가
 
-        const data = JSON.parse(response.data);
-        setSubscriptions(data.items); // 구독 채널 목록을 상태에 저장합니다.
+        setSubscriptions(response.data); // 구독 채널 목록을 상태에 저장합니다.
       } catch (error) {
         console.error('구독 채널 정보를 가져오는 중 오류 발생', error);
       }
@@ -59,9 +57,10 @@ const Home = () => {
         <h2>구독 채널</h2>
         {subscriptions.length > 0 ? (
           subscriptions.map(subscription => (
-            <div key={subscription.snippet.resourceId.channelId}>
-              <h3>{subscription.snippet.title}</h3>
-              <img src={subscription.snippet.thumbnails.default.url} alt={subscription.snippet.title} />
+            <div key={subscription.channelId}>
+              <h3>{subscription.title}</h3>
+              <img src={subscription.thumnailUrl} alt={subscription.title} />
+              <p>{subscription.description}</p>
             </div>
           ))
         ) : (

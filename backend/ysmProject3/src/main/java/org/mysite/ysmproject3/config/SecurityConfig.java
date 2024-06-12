@@ -53,7 +53,7 @@ public class SecurityConfig {
                                 log.info("securityConfig : {}", request);
                                 log.error("Authentication failed: {}", exception.getMessage(), exception); // 예외 메시지 및 스택 트레이스를 로그로 기록
                                 Map<String, String> failData = new HashMap<>();
-                                failData.put("message", "선문대 이메일이 아닙니다.");
+                                failData.put("message", "로그인 실패");
 
                                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                                 response.setContentType("application/json;charset=UTF-8");

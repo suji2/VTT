@@ -35,10 +35,4 @@ out/
 
 ### VS Code ###
 .vscode/
-<<<<<<< HEAD
-=======
 
-application.properties
-*.env
-/.gradle/
->>>>>>> SEUNGHAN

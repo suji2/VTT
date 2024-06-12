@@ -74,7 +74,7 @@ public class YouTubeController {
 //http://localhost:8080/youtube/channelvideos?channelId=UClWg5n2YST6_697s-zQSMnA&nextPageToken=CA8QAA
     // 채널별 영상 가져오기
     @GetMapping("/youtube/channelvideos")
-    public List<VideoDTO> getChannelList(Authentication authentication, @RequestParam(required = false) String channelId, @RequestParam(required = false) String nextPageToken) throws IOException, GeneralSecurityException {
+    public List<VideoDTO> getChannelList(Authentication authentication, @RequestParam String channelId, @RequestParam(required = false) String nextPageToken) throws IOException, GeneralSecurityException {
         OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
         OAuth2AuthorizedClient client = authorizedClientService
                 .loadAuthorizedClient(
@@ -88,7 +88,7 @@ public class YouTubeController {
 
         System.out.println(youtubeService.getPageVideos(accessToken, "UClWg5n2YST6_697s-zQSMnA", null));
 
-        return youtubeService.getPageVideos(accessToken, "UClWg5n2YST6_697s-zQSMnA", null);
+        return youtubeService.getPageVideos(accessToken, channelId, null);
     }
 
     //영상 정보 가져오기 및 저장

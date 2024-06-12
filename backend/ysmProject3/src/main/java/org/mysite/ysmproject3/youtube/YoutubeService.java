@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
-
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
@@ -140,7 +139,7 @@ public class YoutubeService {
             JSONObject snippet = item.getJSONObject("snippet");
             JSONObject resourceId = snippet.getJSONObject("resourceId");
             JSONObject thumnail = snippet.getJSONObject("thumbnails");
-            JSONObject thumnailHigh = thumnail.getJSONObject("high");
+            JSONObject thumnailHigh = thumnail.getJSONObject("medium");
 
 
             chennelDTO.setChannelId(resourceId.getString("channelId"));  // id 값만 리스트에 추가

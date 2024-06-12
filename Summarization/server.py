@@ -11,37 +11,23 @@ CORS(app)
 
 # KoBART 모델 및 토크나이저 로드
 tokenizer = PreTrainedTokenizerFast.from_pretrained('gogamza/kobart-base-v1')
-model = BartForConditionalGeneration.from_pretrained('C:/Users/tnwl3/Desktop/VTT/AI_Model')
+model = BartForConditionalGeneration.from_pretrained('C:/Users/user/Documents/VTT/AI_Model')
 
 # 구두점 모델 불러오기
 punctuation_model = PunctuationModel()
 
 # 텍스트 전처리 및 구두점 복원 함수
 def add_punctuation(text):
-    # 괄호 안의 텍스트 제거
-    text = re.sub(r'\[.*?\]', '', text)
+    text = re.sub(r'\[.*?\]', '', text) # 괄호 안의 텍스트 제거
+    text = re.sub(r'[^\w\s가-힣\d%,]', '', text) # 특수문자 제거 (숫자 및 문장 경계는 유지)
+    text = re.sub(r'(\d)\s+(\d)', r'\1\2', text) # 숫자 사이의 공백 제거
 
-    # 특수문자 제거 (숫자 및 문장 경계는 유지)
-    text = re.sub(r'[^\w\s가-힣\d%,]', '', text)
-
-    # 숫자 사이의 공백 제거
-    text = re.sub(r'(\d)\s+(\d)', r'\1\2', text)
-    
-    # 구두점 복원
-    punctuated_text = punctuation_model.restore_punctuation(text)
-    
-    # 모든 문장 끝에 구두점 추가 후 공백 추가
-    punctuated_text = re.sub(r'([.!?])(\S)', r'\1 \2', punctuated_text)
-
-    # ':' 구두점 대체
-    punctuated_text = punctuated_text.replace(':', '.')
-
-    # 문장 끝에 구두점이 없는 경우 마침표 추가
-    punctuated_text = re.sub(r'(?<![.!?])\s*\n', '.\n', punctuated_text)
-    punctuated_text = re.sub(r'(?<![.!?])$', '.', punctuated_text)
-
-    # % 기호와 숫자 사이의 공백 제거
-    punctuated_text = re.sub(r'(\d+)\s*%', r'\1%', punctuated_text)
+    punctuated_text = punctuation_model.restore_punctuation(text) # 구두점 복원
+    punctuated_text = re.sub(r'([.!?])(\S)', r'\1 \2', punctuated_text) # 모든 문장 끝에 구두점 추가 후 공백 추가
+    punctuated_text = punctuated_text.replace(':', '.') # ':' 구두점 대체
+    # punctuated_text = re.sub(r'(?<![.!?])\s*\n', '.\n', punctuated_text) # 문장 끝에 구두점이 없는 경우 마침표 추가
+    # punctuated_text = re.sub(r'(?<![.!?])$', '.', punctuated_text)
+    punctuated_text = re.sub(r'(\d+)\s*%', r'\1%', punctuated_text) # % 기호와 숫자 사이의 공백 제거
     return punctuated_text
 
 # 영상 스크립트 추출 함수
@@ -65,10 +51,6 @@ def summarize_text(input_text):
     summary_text = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
     return summary_text
 
-@app.route('/')
-def home():
-    return 'Hello, World!'
-
 @app.route('/summarize', methods=['POST'])
 def summarize_video():
     data = request.get_json()
@@ -88,7 +70,7 @@ def summarize_video():
     except Exception as e:
         return jsonify({'error': 'Error during summarization: ' + str(e)}), 500
 
-    return jsonify({'script': full_script, 'punctuated_script': punctuated_script, 'summary': summary_text})
+    return jsonify({'summary': summary_text})
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5001, debug=True)

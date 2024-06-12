@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './Version.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
@@ -15,7 +15,7 @@ function Version() {
 
   const fetchQuestions = async () => {
     try {
-      const response = await fetch('http://192.168.34.10:8080/api/questions'); // 백엔드 URL로 변경
+      const response = await fetch('/api/question'); // 프록시 설정을 통해 상대 경로로 변경
       const data = await response.json();
       setQuestions(data);
     } catch (error) {
@@ -35,17 +35,13 @@ function Version() {
     navigate('/write');
   };
   
+  // 게시글 클릭 핸들러
+  const handleEdit = (questionId) => {
+    navigate(`/edit/${questionId}`);
+  };
+  
   return (
     <div className="Version">
-      <header className="header">
-        <NavLink to="/" className="nav-title" end> VTT(Video To Text)</NavLink>
-        <nav className="nav-links">
-          <NavLink to="/" className={({ isActive }) => (isActive ? 'nav-link active-link' : 'nav-link')} end>HOME</NavLink>
-          <NavLink to="/about" className={({ isActive }) => (isActive ? 'nav-link active-link' : 'nav-link')}>ABOUT</NavLink>
-          <NavLink to="/version" className={({ isActive }) => (isActive ? 'nav-link active-link' : 'nav-link')}>Q&A</NavLink>
-          <NavLink to="/login" className={({ isActive }) => isActive ? "nav-link active-link" : "nav-link"}>Login</NavLink>
-        </nav>
-      </header>
       <div className="search-container">
         <form onSubmit={handleSearch} className="search-form">
           <input
@@ -71,7 +67,11 @@ function Version() {
         {questions.map((question, index) => (
           <div key={question.question_num} className="table-row">
             <div className="table-cell">{index + 1}</div>
-            <div className="table-cell">{question.title}</div>
+            <div className="table-cell">
+              <span onClick={() => handleEdit(question.question_num)} className="question-title">
+                {question.title}
+              </span>
+            </div>
             <div className="table-cell">{new Date(question.createDate).toLocaleDateString()}</div>
             <div className="table-cell">{question.answerYN}</div>
           </div>

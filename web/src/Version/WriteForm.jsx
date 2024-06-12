@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCamera } from '@fortawesome/free-solid-svg-icons';
 
 function WriteForm() {
-  // 각 필드별로 상태 설정
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [file, setFile] = useState(null);
@@ -24,12 +23,18 @@ function WriteForm() {
         const formData = new FormData();
         formData.append('title', title);
         formData.append('content', content);
+        formData.append('secretYN', 'N'); // 비공개 여부, 여기서는 기본값을 'N'으로 설정
         if (file) {
           formData.append('file', file);
         }
 
+        // FormData 내용 확인
+        for (let pair of formData.entries()) {
+          console.log(pair[0]+ ', ' + pair[1]); 
+        }
+
         // 백엔드에 데이터 전송
-        const response = await fetch('http://192.168.34.10:8080/api/questions', { // 백엔드 URL로 변경
+        const response = await fetch(' http://10.20.104.80:3000/question', {
           method: 'POST',
           body: formData,
         });
@@ -40,6 +45,8 @@ function WriteForm() {
           navigate('/version'); // Q&A 페이지로 이동
         } else {
           // 저장 실패 시 에러 메시지 표시
+          const errorData = await response.json();
+          console.error("Error response:", errorData);
           window.alert("저장 실패");
         }
       } catch (error) {

@@ -1,10 +1,10 @@
 package org.mysite.ysmproject3.dto;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 public class VideoDTO {
     // 비디오 아이디
     private String videoId;

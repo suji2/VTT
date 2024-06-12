@@ -11,7 +11,7 @@ CORS(app)
 
 # KoBART 모델 및 토크나이저 로드
 tokenizer = PreTrainedTokenizerFast.from_pretrained('gogamza/kobart-base-v1')
-model = BartForConditionalGeneration.from_pretrained('C:/Users/user/Documents/VTT/AI_Model')
+model = BartForConditionalGeneration.from_pretrained('C:/Users/skyKim/Documents/VTT/AI_Model')
 
 # 구두점 모델 불러오기
 punctuation_model = PunctuationModel()

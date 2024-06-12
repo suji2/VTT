@@ -1,0 +1,24 @@
+.video-player-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .video-wrapper {
+    margin-bottom: 20px;
+  }
+  
+  .summary-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #ff5a5f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .summary-button:hover {
+    background-color: #e04848;
+  }
+  

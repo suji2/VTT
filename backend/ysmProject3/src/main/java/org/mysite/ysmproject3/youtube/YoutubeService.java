@@ -163,7 +163,7 @@ public class YoutubeService {
 
 
         // nextPageToken이 null이거나 빈 문자열인 경우
-        String url = String.format("https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&channelId=%s", channelId);
+        String url = String.format("https://www.googleapis.com/youtube/v3/search?part=snippet&order=date&maxResults=1&channelId=%s", channelId);
 
         ResponseEntity<String> response = restTemplate.exchange(
                 url,

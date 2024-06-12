@@ -1,27 +1,16 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 export const postLogout = async () => {
   try {
-    const csrfToken = getCsrfToken(); // CSRF 토큰을 가져오는 함수 호출
-    await axios.post('http://localhost:8080/v1/oauth/logout', {}, {
-      withCredentials: true,
+    await axios.post('http://localhost/logout', {}, {
       headers: {
-        'X-XSRF-TOKEN': csrfToken
-      }
+        'Authorization': `Bearer ${Cookies.get('ACCESS_TOKEN')}`,
+      },
+      withCredentials: true,
     });
-    window.location.href = '/';
+    Cookies.remove('ACCESS_TOKEN');
   } catch (error) {
-    console.error('Logout failed:', error);
-  }
-};
-
-// CSRF 토큰을 쿠키에서 가져오는 함수
-const getCsrfToken = () => {
-  const match = document.cookie.match(new RegExp('(^| )XSRF-TOKEN=([^;]+)'));
-  if (match) {
-    return match[2];
-  } else {
-    console.error('CSRF token not found');
-    return '';
+    console.error('Error during logout:', error);
   }
 };

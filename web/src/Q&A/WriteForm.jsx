@@ -34,7 +34,7 @@ function WriteForm() {
         }
 
         // 백엔드에 데이터 전송
-        const response = await fetch(' http://10.20.104.80:3000/question', {
+        const response = await fetch(' http://10.20.104.173:3000/question', {
           method: 'POST',
           body: formData,
         });

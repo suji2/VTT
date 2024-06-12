@@ -51,6 +51,7 @@ class GoogleSignInManager {
       return null;
     }
   }
+
   Future<void> fetchDataFromBackend(token) async {
     token = await getAccessToken();
     var url = Uri.parse('https://192.168.0.28:8080/youtube/channel');

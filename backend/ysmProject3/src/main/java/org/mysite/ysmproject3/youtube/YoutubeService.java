@@ -140,7 +140,7 @@ public class YoutubeService {
             JSONObject snippet = item.getJSONObject("snippet");
             JSONObject resourceId = snippet.getJSONObject("resourceId");
             JSONObject thumnail = snippet.getJSONObject("thumbnails");
-            JSONObject thumnailHigh = thumnail.getJSONObject("high");
+            JSONObject thumnailHigh = thumnail.getJSONObject("medium");
 
 
             chennelDTO.setChannelId(resourceId.getString("channelId"));  // id 값만 리스트에 추가

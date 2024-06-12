@@ -1,106 +1,67 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { useNavigate } from 'react-router-dom';
-import './Home.css';
 
-function Home() {
-  const [subscriptions, setSubscriptions] = useState([]);
-  const [selectedChannel, setSelectedChannel] = useState(null);
+const Home = () => {
+  const [userInfo, setUserInfo] = useState(null);
   const [videos, setVideos] = useState([]);
-  const [selectedVideo, setSelectedVideo] = useState(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    const token = Cookies.get('ACCESS_TOKEN');
-    if (token) {
-      fetchSubscriptions(token);
-    }
+    const fetchUserInfo = async () => {
+      try {
+        const accessToken = Cookies.get('ACCESS_TOKEN');
+        const response = await axios.get('http://localhost:8080/api/user', {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          withCredentials: true,
+        });
+        setUserInfo(response.data);
+      } catch (error) {
+        console.error('사용자 정보를 가져오는 중 오류 발생', error);
+      }
+    };
+
+    // const fetchVideos = async () => {
+    //   try {
+    //     const accessToken = Cookies.get('ACCESS_TOKEN');
+    //     const response = await axios.get('http://localhost:8080/api/youtube/videos', {
+    //       headers: {
+    //         Authorization: `Bearer ${accessToken}`,
+    //       },
+    //       withCredentials: true,
+    //     });
+    //     setVideos(response.data);
+    //   } catch (error) {
+    //     console.error('동영상 정보를 가져오는 중 오류 발생', error);
+    //   }
+    // };
+
+    fetchUserInfo();
+    // fetchVideos();
   }, []);
 
-  const fetchSubscriptions = async (token) => {
-    try {
-      const response = await axios.get('/youtube/channel', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        },
-        withCredentials: true
-      });
-      setSubscriptions(response.data.items);
-    } catch (error) {
-      console.error('구독 목록을 가져오는 중 오류 발생:', error);
-    }
-  };
-
-  const handleChannelSelect = (channelId) => {
-    setSelectedChannel(channelId);
-    const token = Cookies.get('ACCESS_TOKEN');
-    axios.get('/youtube/channelvideos', {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      },
-      params: { channelId: channelId, nextPageToken: '' },
-      withCredentials: true
-    })
-      .then(response => {
-        setVideos(response.data.items);
-      })
-      .catch(error => console.error('채널 비디오를 가져오는 중 오류 발생:', error));
-  };
-
-  const handleVideoSelect = (videoId) => {
-    setSelectedVideo(videoId);
-    const token = Cookies.get('ACCESS_TOKEN');
-    axios.get('/youtube/detail', {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      },
-      params: { videoId: videoId },
-      withCredentials: true
-    })
-      .then(response => {
-        // 비디오 상세 정보 저장 (원하는 경우)
-      })
-      .catch(error => console.error('비디오 세부 정보를 가져오는 중 오류 발생:', error));
-  };
-
   return (
-    <div className="home">
-      <main className="main-content">
-        <div className="subscriptions">
-          <h2>구독 채널</h2>
-          {subscriptions.map(subscription => (
-            <div key={subscription.snippet.resourceId.channelId} onClick={() => handleChannelSelect(subscription.snippet.resourceId.channelId)}>
-              {subscription.snippet.title}
-            </div>
-          ))}
+    <div>
+      {userInfo && (
+        <div>
+          <h1>{userInfo.name}님의 프로필</h1>
+          <img src={userInfo.picture} alt="프로필 사진" />
+          <p>Email: {userInfo.email}</p>
         </div>
-
-        {selectedChannel && (
-          <div className="videos">
-            <h2>비디오</h2>
-            {videos.map(video => (
-              <div key={video.id.videoId} onClick={() => handleVideoSelect(video.id.videoId)}>
-                {video.snippet.title}
-              </div>
-            ))}
+      )}
+      <div>
+        <h2>유튜브 동영상</h2>
+        {videos.map(video => (
+          <div key={video.id}>
+            <h3>{video.title}</h3>
+            <img src={video.smThumbnail} alt={video.title} />
+            <p>{video.description}</p>
           </div>
-        )}
-
-        {selectedVideo && (
-          <div className="video-details">
-            <h2>비디오 상세 정보</h2>
-            {/* 비디오 상세 정보 표시 (원하는 경우) */}
-          </div>
-        )}
-      </main>
-      <div className="footer-links">
-        <a href="https://github.com/suji2/VTT.git" target="_blank" rel="noopener noreferrer">
-          <img src="/git.png" alt="GitHub" className="footer-icon" />
-        </a>
+        ))}
       </div>
     </div>
   );
-}
+};
 
 export default Home;

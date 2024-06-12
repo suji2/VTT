@@ -1,20 +1,27 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from './axiosConfig';
 
-const PostLoginToken = () => {
+const PostLoginToken = ({ setIsLogin }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get('token');
+    const fetchToken = async () => {
+      try {
+        const response = await axios.get('/api/user');
+        localStorage.setItem('accessToken', response.data.accessToken);
+        setIsLogin(true);
+        navigate('/');
+      } catch (error) {
+        console.error('Error fetching token:', error);
+        setIsLogin(false);
+        navigate('/login');
+      }
+    };
+    fetchToken();
+  }, [setIsLogin, navigate]);
 
-    if (token) {
-      localStorage.setItem('accessToken', token);
-      navigate('/mypage');
-    }
-  }, [navigate]);
-
-  return null;
+  return <div>Loading...</div>;
 };
 
 export default PostLoginToken;

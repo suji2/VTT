@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import Cookies from 'js-cookie'; // 쿠키 가져오기 위해 추가
+import Cookies from 'js-cookie';
 import './Channel.css';
 
 const Channel = () => {
@@ -21,7 +21,7 @@ const Channel = () => {
 
         console.log('Channel videos response:', response.data);
 
-        setVideos(response.data); // 채널의 동영상 목록을 상태에 저장합니다.
+        setVideos(response.data);
       } catch (error) {
         console.error('채널 동영상을 가져오는 중 오류 발생', error);
       }
@@ -38,7 +38,11 @@ const Channel = () => {
           videos.map(video => (
             <div key={video.videoId} className="video">
               <img className="video-thumbnail" src={video.smThumbnail} alt={video.title} />
-              <h3 className="video-title">{video.title}</h3>
+              <div className="video-details">
+                <h3 className="video-title">{video.title}</h3>
+                <p className="video-description">{video.description}</p>
+                <p className="video-published">게시일: {new Date(video.publishedAt).toLocaleDateString()}</p>
+              </div>
             </div>
           ))
         ) : (

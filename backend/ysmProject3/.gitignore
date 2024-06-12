@@ -35,5 +35,13 @@ out/
 
 ### VS Code ###
 .vscode/
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
 
-
+application.properties
+*.env
+/.gradle/
+>>>>>>> SEUNGHAN
+>>>>>>> main

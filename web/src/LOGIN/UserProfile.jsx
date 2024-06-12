@@ -1,24 +1,15 @@
+// UserProfile.jsx
 import React from 'react';
-import { useLocation } from 'react-router-dom';
 
-function UserProfile() {
-  const location = useLocation();
-  const user = location.state?.user;
-
+const UserProfile = ({ userInfo }) => {
   return (
     <div>
-      <h1>User Profile</h1>
-      {user ? (
-        <div>
-          <p>Name: {user.name}</p>
-          <p>Email: {user.email}</p>
-          {user.picture && <img src={user.picture} alt="Profile" />}
-        </div>
-      ) : (
-        <p>No user data available.</p>
-      )}
+      <h1>사용자 프로필</h1>
+      <p>이름: {userInfo.name}</p>
+      <p>이메일: {userInfo.email}</p>
+      <img src={userInfo.picture} alt="프로필" />
     </div>
   );
-}
+};
 
 export default UserProfile;

@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 
 const Home = () => {
   const [userInfo, setUserInfo] = useState(null);
-  const [videos, setVideos] = useState([]);
+  const [subscriptions, setSubscriptions] = useState([]);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -22,23 +22,28 @@ const Home = () => {
       }
     };
 
-    // const fetchVideos = async () => {
-    //   try {
-    //     const accessToken = Cookies.get('ACCESS_TOKEN');
-    //     const response = await axios.get('http://localhost:8080/api/youtube/videos', {
-    //       headers: {
-    //         Authorization: `Bearer ${accessToken}`,
-    //       },
-    //       withCredentials: true,
-    //     });
-    //     setVideos(response.data);
-    //   } catch (error) {
-    //     console.error('동영상 정보를 가져오는 중 오류 발생', error);
-    //   }
-    // };
+    const fetchSubscriptions = async () => {
+      try {
+        const accessToken = Cookies.get('ACCESS_TOKEN');
+        const response = await axios.get('http://localhost:8080/youtube/channel', {
+          params: { token: accessToken },
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          withCredentials: true,
+        });
+
+        console.log('Subscriptions response:', response.data); // 응답 데이터 로그 추가
+
+        const data = JSON.parse(response.data);
+        setSubscriptions(data.items); // 구독 채널 목록을 상태에 저장합니다.
+      } catch (error) {
+        console.error('구독 채널 정보를 가져오는 중 오류 발생', error);
+      }
+    };
 
     fetchUserInfo();
-    // fetchVideos();
+    fetchSubscriptions();
   }, []);
 
   return (
@@ -51,14 +56,17 @@ const Home = () => {
         </div>
       )}
       <div>
-        <h2>유튜브 동영상</h2>
-        {videos.map(video => (
-          <div key={video.id}>
-            <h3>{video.title}</h3>
-            <img src={video.smThumbnail} alt={video.title} />
-            <p>{video.description}</p>
-          </div>
-        ))}
+        <h2>구독 채널</h2>
+        {subscriptions.length > 0 ? (
+          subscriptions.map(subscription => (
+            <div key={subscription.snippet.resourceId.channelId}>
+              <h3>{subscription.snippet.title}</h3>
+              <img src={subscription.snippet.thumbnails.default.url} alt={subscription.snippet.title} />
+            </div>
+          ))
+        ) : (
+          <p>구독 채널이 없습니다.</p>
+        )}
       </div>
     </div>
   );

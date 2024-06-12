@@ -1,4 +1,4 @@
-package org.mysite.ysmproject3.domain;
+package org.mysite.ysmproject3.dto;
 
 import lombok.Getter;
 import lombok.Setter;

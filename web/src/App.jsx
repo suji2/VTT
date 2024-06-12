@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import './App.css';
 import axios from './api/axiosConfig'; // axiosConfig.js 파일 import
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './HOME/Home';
@@ -11,6 +10,7 @@ import getUserInfo from './api/getUserInfo'; // getUserInfo 올바르게 임포�
 import Nav from './components/Nav'; // Nav 임포트 추가
 import LoginButton from './components/LoginButton'; // LoginButton 임포트 추가
 import PostLoginToken from './api/postLoginToken'; // PostLoginToken 임포트 추가
+import Channel from './HOME/Chammel'; // Channel 임포트 추가
 
 function App() {
   const [data, setData] = useState([]);
@@ -42,6 +42,7 @@ function App() {
               <Route path="/version" element={<Version />} />
               <Route path="/write" element={<WriteForm />} />
               <Route path="/edit/:questionId" element={<EditForm />} /> {/* EditForm 라우트 추가 */}
+              <Route path="/channel/:channelId" element={<Channel />} /> {/* Channel 라우트 추가 */}
             </Routes>
           </>
         ) : (

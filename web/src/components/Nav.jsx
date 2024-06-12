@@ -23,11 +23,6 @@ const Nav = ({ isLogin, setIsLogin }) => {
           )}
         </nav>
       </header>
-      <div className="footer-links">
-        <a href="https://github.com/suji2/VTT.git" target="_blank" rel="noopener noreferrer">
-          <img src="/git.png" alt="GitHub" className="footer-icon" />
-        </a>
-      </div>
     </div>
   );
 }

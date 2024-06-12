@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
+import './Home.css';
 
 const Home = () => {
   const [userInfo, setUserInfo] = useState(null);
   const [subscriptions, setSubscriptions] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -32,7 +35,7 @@ const Home = () => {
           withCredentials: true,
         });
 
-        console.log('Subscriptions response:', response.data); // 응답 데이터 로그 추가
+        console.log('Subscriptions response:', response.data);
 
         setSubscriptions(response.data); // 구독 채널 목록을 상태에 저장합니다.
       } catch (error) {
@@ -44,8 +47,12 @@ const Home = () => {
     fetchSubscriptions();
   }, []);
 
+  const handleChannelClick = (channelId) => {
+    navigate(`/channel/${channelId}`);
+  };
+
   return (
-    <div>
+    <div className="home">
       {userInfo && (
         <div>
           <h1>{userInfo.name}님의 프로필</h1>
@@ -55,17 +62,18 @@ const Home = () => {
       )}
       <div>
         <h2>구독 채널</h2>
-        {subscriptions.length > 0 ? (
-          subscriptions.map(subscription => (
-            <div key={subscription.channelId}>
-              <h3>{subscription.title}</h3>
-              <img src={subscription.thumnailUrl} alt={subscription.title} />
-              <p>{subscription.description}</p>
-            </div>
-          ))
-        ) : (
-          <p>구독 채널이 없습니다.</p>
-        )}
+        <div className="subscriptions-container">
+          {subscriptions.length > 0 ? (
+            subscriptions.map(subscription => (
+              <div key={subscription.channelId} className="subscription" onClick={() => handleChannelClick(subscription.channelId)}>
+                <h3 className="subscription-title">{subscription.title}</h3>
+                <img className="thumbnail-image" src={subscription.thumnailUrl} alt={subscription.title} />
+              </div>
+            ))
+          ) : (
+            <p>구독 채널이 없습니다.</p>
+          )}
+        </div>
       </div>
     </div>
   );

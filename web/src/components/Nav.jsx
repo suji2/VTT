@@ -1,11 +1,13 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import './Nav.css';
+import { postLogout } from '../api/postLogout';
 
 const Nav = ({ isLogin, setIsLogin }) => {
-  const handleLogout = () => {
-    localStorage.removeItem('accessToken');
+  const handleLogout = async () => {
+    await postLogout();
     setIsLogin(false);
+    window.location.href = '/'; // 로그아웃 성공 시 리디렉트
   };
 
   return (

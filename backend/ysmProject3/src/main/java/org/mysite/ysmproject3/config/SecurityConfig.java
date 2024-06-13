@@ -17,10 +17,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +34,13 @@ import java.util.Map;
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
+
+    private final ClientRegistrationRepository clientRegistrationRepository;
+
+    // 추가된 생성자
+    public SecurityConfig(ClientRegistrationRepository clientRegistrationRepository) {
+        this.clientRegistrationRepository = clientRegistrationRepository;
+    }
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder(){
@@ -85,8 +96,21 @@ public class SecurityConfig {
                             }
                         })
                 )
-                .logout(Customizer.withDefaults());
+                .logout(logout -> logout
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout")) // 추가된 부분
+                        .logoutSuccessHandler(oidcLogoutSuccessHandler()) // 추가된 부분
+                        .deleteCookies("JSESSIONID", "ACCESS_TOKEN") // 추가된 부분
+                        .invalidateHttpSession(true) // 추가된 부분
+                        .clearAuthentication(true) // 추가된 부분
+                );
         return http.build();
+    }
+
+    // 추가된 메서드
+    private OidcClientInitiatedLogoutSuccessHandler oidcLogoutSuccessHandler() {
+        OidcClientInitiatedLogoutSuccessHandler successHandler = new OidcClientInitiatedLogoutSuccessHandler(clientRegistrationRepository);
+        successHandler.setPostLogoutRedirectUri("http://localhost:3000/"); // 로그아웃 후 리다이렉트할 URI 설정
+        return successHandler;
     }
 
     @Bean

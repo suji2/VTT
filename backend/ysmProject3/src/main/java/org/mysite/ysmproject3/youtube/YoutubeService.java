@@ -115,7 +115,7 @@ public class YoutubeService {
         headers.setBearerAuth(accessToken);
         HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
 
-        String urlTemplate = "https://www.googleapis.com/youtube/v3/subscriptions?part=snippet&mine=true&maxResults=50";
+        String urlTemplate = "https://www.googleapis.com/youtube/v3/subscriptions?part=snippet&mine=true&maxResults=1";
         if (nextPageToken != null && !nextPageToken.isEmpty()) {
             urlTemplate += "&pageToken=" + nextPageToken;  // nextPageToken을 URL에 추가
         }

@@ -24,11 +24,6 @@ function App() {
     };
     initLogin();
 
-    axios.get('/api/question')
-      .then(res => {
-        setData(res.data);
-      })
-      .catch(err => console.log(err));
   }, []);
 
   return (

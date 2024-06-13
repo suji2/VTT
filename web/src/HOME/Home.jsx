@@ -5,26 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import './Home.css';
 
 const Home = () => {
-  const [userInfo, setUserInfo] = useState(null);
   const [subscriptions, setSubscriptions] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchUserInfo = async () => {
-      try {
-        const accessToken = Cookies.get('ACCESS_TOKEN');
-        const response = await axios.get('http://localhost:8080/api/user', {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-          withCredentials: true,
-        });
-        setUserInfo(response.data);
-      } catch (error) {
-        console.error('사용자 정보를 가져오는 중 오류 발생', error);
-      }
-    };
-
     const fetchSubscriptions = async () => {
       try {
         const accessToken = Cookies.get('ACCESS_TOKEN');
@@ -43,7 +27,6 @@ const Home = () => {
       }
     };
 
-    fetchUserInfo();
     fetchSubscriptions();
   }, []);
 
@@ -53,13 +36,6 @@ const Home = () => {
 
   return (
     <div className="home">
-      {userInfo && (
-        <div>
-          <h1>{userInfo.name}님의 프로필</h1>
-          <img src={userInfo.picture} alt="프로필 사진" />
-          <p>Email: {userInfo.email}</p>
-        </div>
-      )}
       <div>
         <h2>구독 채널</h2>
         <div className="subscriptions-container">

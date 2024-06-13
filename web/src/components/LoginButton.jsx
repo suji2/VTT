@@ -8,7 +8,7 @@ const LoginButton = () => {
 
   return (
     <div className="login-container">
-      <img src="/VTT.webp" alt="VTT" className="login-image" />
+      <img src="/max.PNG" alt="VTT" className="login-image" />
       <button onClick={handleLoginClick} className="login-button">
         로그인하러 가기
       </button>

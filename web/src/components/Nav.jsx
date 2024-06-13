@@ -6,10 +6,6 @@ import './Nav.css';
 import { postLogout } from '../api/postLogout';
 
 const Nav = ({ isLogin, setIsLogin }) => {
-<<<<<<< HEAD
-  const handleLogout = async () => {
-    await postLogout();
-=======
   const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
@@ -33,9 +29,9 @@ const Nav = ({ isLogin, setIsLogin }) => {
     }
   }, [isLogin]);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await postLogout();
     Cookies.remove('ACCESS_TOKEN');
->>>>>>> haneul
     setIsLogin(false);
     window.location.href = '/'; // 로그아웃 성공 시 리디렉트
   };

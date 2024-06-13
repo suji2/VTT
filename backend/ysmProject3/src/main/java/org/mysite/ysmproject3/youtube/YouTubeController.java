@@ -91,7 +91,6 @@ public class YouTubeController {
         return youtubeService.getPageVideos(accessToken, channelId, null);
     }
 
-
     //영상 정보 가져오기 및 저장
     //http://localhost:8080/youtube/detail?videoId=NNZ3dWqF7u0
     @GetMapping("/youtube/detail")

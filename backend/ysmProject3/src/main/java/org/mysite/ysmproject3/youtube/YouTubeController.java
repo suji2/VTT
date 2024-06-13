@@ -4,7 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.mysite.ysmproject3.youtube.YoutubeService;
+import org.mysite.ysmproject3.dto.ChannelDTO;
+import org.mysite.ysmproject3.dto.VideoDTO;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -18,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,34 +30,9 @@ public class YouTubeController {
 
     //유튜브 채널 목록
     //http://localhost:8080/youtube/channel
+    //완료 24.06.12
     @GetMapping("/youtube/channel")
-    @ResponseBody
-    public String callYouTubeApi(Authentication authentication, @RequestParam(required = false) String nextPageToken, @RequestParam String token) throws IOException, GeneralSecurityException {
-
-        System.out.println("토큰: " + token);
-        OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
-        OAuth2AuthorizedClient client = authorizedClientService
-                .loadAuthorizedClient(
-                        oauthToken.getAuthorizedClientRegistrationId(),
-                        oauthToken.getName());
-        if (client == null) {
-            // 적절한 예외 처리 또는 로그 출력
-            throw new IllegalStateException("OAuth2AuthorizedClient not found. Are you logged in?");
-        }
-
-//        String accessToken = client.getAccessToken().getTokenValue();
-        String accessToken = token;
-
-        System.out.println(youtubeService.getSubscriptions(accessToken, nextPageToken));
-
-        return youtubeService.getSubscriptions(accessToken, nextPageToken); // API 응답 내용
-    }
-
-    //채널 페이지별 영상 가져오기
-    //http://localhost:8080/youtube/channelvideos?channelId=UClWg5n2YST6_697s-zQSMnA&nextPageToken=CA8QAA
-    @GetMapping("/youtube/channelvideos")
-    @ResponseBody
-    public String getChannelList(Authentication authentication, @RequestParam String channelId, @RequestParam String nextPageToken) throws IOException, GeneralSecurityException {
+    public List<ChannelDTO> getChannel(Authentication authentication, @RequestParam(required = false) String nextPageToken) throws IOException, GeneralSecurityException {
         OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
         OAuth2AuthorizedClient client = authorizedClientService
                 .loadAuthorizedClient(
@@ -67,14 +44,58 @@ public class YouTubeController {
         }
         String accessToken = client.getAccessToken().getTokenValue();
 
-        return youtubeService.getPageVideos(accessToken, channelId, nextPageToken);
+        System.out.println(youtubeService.getSubscriptions(accessToken, null));
+
+        return youtubeService.getSubscriptions(accessToken, null); // API 응답 내용
+    }
+
+//    //채널 페이지별 영상 가져오기
+//    //http://localhost:8080/youtube/channelvideos?channelId=UClWg5n2YST6_697s-zQSMnA&nextPageToken=CA8QAA
+//    @GetMapping("/youtube/channelvideos")
+//    public String getChannelList(Authentication authentication, @RequestParam String channelId, @RequestParam(required = false) String nextPageToken) throws IOException, GeneralSecurityException {
+//        OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
+//        OAuth2AuthorizedClient client = authorizedClientService
+//                .loadAuthorizedClient(
+//                        oauthToken.getAuthorizedClientRegistrationId(),
+//                        oauthToken.getName());
+//        if (client == null) {
+//            // 적절한 예외 처리 또는 로그 출력
+//            throw new IllegalStateException("OAuth2AuthorizedClient not found. Are you logged in?");
+//        }
+//        String accessToken = client.getAccessToken().getTokenValue();
+//
+//        System.out.println(youtubeService.getPageVideos(accessToken, channelId, null));
+//
+//        return null;
+//    }
+
+    //채널 페이지별 영상 가져오기
+    // 완료(24.06.12)
+//http://localhost:8080/youtube/channelvideos?channelId=UClWg5n2YST6_697s-zQSMnA&nextPageToken=CA8QAA
+    // 채널별 영상 가져오기
+    @GetMapping("/youtube/channelvideos")
+    public List<VideoDTO> getChannelList(Authentication authentication, @RequestParam String channelId, @RequestParam(required = false) String nextPageToken) throws IOException, GeneralSecurityException {
+        OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
+        OAuth2AuthorizedClient client = authorizedClientService
+                .loadAuthorizedClient(
+                        oauthToken.getAuthorizedClientRegistrationId(),
+                        oauthToken.getName());
+        if (client == null) {
+            // 적절한 예외 처리 또는 로그 출력
+            throw new IllegalStateException("OAuth2AuthorizedClient not found. Are you logged in?");
+        }
+        String accessToken = client.getAccessToken().getTokenValue();
+
+        System.out.println(youtubeService.getPageVideos(accessToken, "UClWg5n2YST6_697s-zQSMnA", null));
+
+        return youtubeService.getPageVideos(accessToken, channelId, null);
     }
 
     //영상 정보 가져오기 및 저장
     //http://localhost:8080/youtube/detail?videoId=NNZ3dWqF7u0
     @GetMapping("/youtube/detail")
     @ResponseBody
-    public String getDetailVideo(Authentication authentication, @RequestParam String videoId) {
+    public VideoDTO getDetailVideo(Authentication authentication, @RequestParam String videoId) {
         OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
         OAuth2AuthorizedClient client = authorizedClientService
                 .loadAuthorizedClient(
@@ -85,41 +106,55 @@ public class YouTubeController {
             throw new IllegalStateException("OAuth2AuthorizedClient not found. Are you logged in?");
         }
         String accessToken = client.getAccessToken().getTokenValue();
+        System.out.println("비디오 정보: "+youtubeService.getDetailVideo(accessToken, "NNZ3dWqF7u0"));
 
         return youtubeService.getDetailVideo(accessToken, videoId);
 
     }
 
-    //유튜브 댓글 가져오기
-    //http://localhost:8080/youtube/comments?videoId=1ifSAFCGiX8
-    @GetMapping("/youtube/comments")
-    @ResponseBody
-    public String getVideoComments(Authentication authentication, @RequestParam String videoId) throws IOException, GeneralSecurityException {
-        OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
-        OAuth2AuthorizedClient client = authorizedClientService
-                .loadAuthorizedClient(
-                        oauthToken.getAuthorizedClientRegistrationId(),
-                        oauthToken.getName());
-
-        if (client == null) {
-            throw new IllegalStateException("OAuth2AuthorizedClient not found. Are you logged in?");
-        }
-
-        String accessToken = client.getAccessToken().getTokenValue();
-
-//        RestTemplate restTemplate = new RestTemplate();
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setBearerAuth(accessToken);
-//        HttpEntity<?> entity = new HttpEntity<>(headers);
-
-        return youtubeService.getComments(accessToken, videoId);
-    }
 
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//    //유튜브 댓글 가져오기
+//    //http://localhost:8080/youtube/comments?videoId=1ifSAFCGiX8
+//    @GetMapping("/youtube/comments")
+//    public String getVideoComments(Authentication authentication, @RequestParam String videoId) throws IOException, GeneralSecurityException {
+//        OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
+//        OAuth2AuthorizedClient client = authorizedClientService
+//                .loadAuthorizedClient(
+//                        oauthToken.getAuthorizedClientRegistrationId(),
+//                        oauthToken.getName());
+//
+//        if (client == null) {
+//            throw new IllegalStateException("OAuth2AuthorizedClient not found. Are you logged in?");
+//        }
+//
+//        String accessToken = client.getAccessToken().getTokenValue();
+//
+////        RestTemplate restTemplate = new RestTemplate();
+////        HttpHeaders headers = new HttpHeaders();
+////        headers.setBearerAuth(accessToken);
+////        HttpEntity<?> entity = new HttpEntity<>(headers);
+//
+//        return youtubeService.getComments(accessToken, videoId);
+//    }
 
 
 //    //유튜브 채널 목록
@@ -180,7 +215,6 @@ public class YouTubeController {
     //유튜브 자막 추출
     //http://localhost:8080/youtube/captionlist?videoId=1ifSAFCGiX8
     @GetMapping("/youtube/captiondownload")
-    @ResponseBody
     public String getYouTubeCaptionDownloader(Authentication authentication,@RequestParam String videoId) throws IOException, GeneralSecurityException {
         OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
         OAuth2AuthorizedClient client = authorizedClientService
@@ -232,7 +266,6 @@ public class YouTubeController {
 
     //http://localhost:8080/youtube/captiondown?id=AUieDabfxc8sHdmoHb-04rA0aGWfOYNqh_qmv117sTjQmj0WyGQ
     @GetMapping("/youtube/captiondown")
-    @ResponseBody
     public String getcaptiondown(Authentication authentication,@RequestParam String id) {
         OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
         OAuth2AuthorizedClient client = authorizedClientService
@@ -266,7 +299,6 @@ public class YouTubeController {
 
     //http://localhost:8080/youtube/captionlist?videoId=1ifSAFCGiX8
     @GetMapping("/youtube/captionlist")
-    @ResponseBody
     public String getcaptionlist(Authentication authentication,@RequestParam String videoId) throws IOException, GeneralSecurityException {
         OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
         OAuth2AuthorizedClient client = authorizedClientService

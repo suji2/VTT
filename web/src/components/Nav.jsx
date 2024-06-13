@@ -1,35 +1,69 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { postLogout } from '../api/postLogout'; // 올바른 경로로 수정
+import React, { useEffect, useState } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import axios from '../api/axiosConfig'; // 경로 수정
+import Cookies from 'js-cookie';
+import './Nav.css';
+import { postLogout } from '../api/postLogout';
 
-function Nav({ isLogin, setIsLogin }) {
+const Nav = ({ isLogin, setIsLogin }) => {
+  const [userInfo, setUserInfo] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isLogin) {
+      const fetchUserInfo = async () => {
+        try {
+          const accessToken = Cookies.get('ACCESS_TOKEN');
+          const response = await axios.get('http://localhost:8080/api/user', {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+            withCredentials: true,
+          });
+          setUserInfo(response.data);
+        } catch (error) {
+          console.error('사용자 정보를 가져오는 중 오류 발생', error);
+        }
+      };
+
+      fetchUserInfo();
+    }
+  }, [isLogin]);
+
   const handleLogout = async () => {
-    await postLogout();
-    setIsLogin(false);
+    try {
+      await postLogout();
+      Cookies.remove('ACCESS_TOKEN');
+      setIsLogin(false);
+      navigate('/login'); // 로그아웃 성공 시 로그인 페이지로 리디렉트
+    } catch (error) {
+      console.error('로그아웃 중 오류 발생', error);
+    }
   };
 
   return (
     <div className="NAV">
-    <header className="header">
-        <NavLink to="/" className="nav-title" end> VTT(Video To Text)</NavLink>
+      <header className="header">
+        <NavLink to="/" className="nav-title" end>VTT(Video To Text)</NavLink>
         <nav className="nav-links">
-        <NavLink to="/" className={({ isActive }) => isActive ? "nav-link active-link" : "nav-link"} end>HOME</NavLink>
-          <NavLink to="/about" className={({ isActive }) => isActive ? "nav-link active-link" : "nav-link"}>ABOUT</NavLink>
-          <NavLink to="/version" className={({ isActive }) => isActive ? "nav-link active-link" : "nav-link"}>Q&A</NavLink>
+          <NavLink to="/" className={({ isActive }) => isActive ? 'nav-link active-link' : 'nav-link'} end>HOME</NavLink>
+          <NavLink to="/about" className={({ isActive }) => isActive ? 'nav-link active-link' : 'nav-link'}>ABOUT</NavLink>
           {isLogin ? (
-        <NavLink to="#" onClick={handleLogout} className="nav-link">Logout</NavLink>
-      ) : (
-        <NavLink to="/login" className="nav-link">Login</NavLink>
-      )}
-    </nav>
-    </header>
-      <div className="footer-links">
-        <a href="https://github.com/suji2/VTT.git" target="_blank" rel="noopener noreferrer">
-          <img src="/git.png" alt="GitHub" className="footer-icon" />
-        </a>
-      </div>
+            <div className="nav-auth">
+              <NavLink to="#" onClick={handleLogout} className="nav-link">Logout</NavLink>
+              {userInfo && (
+                <div className="profile-info">
+                  <img src={userInfo.picture} alt="Profile" className="profile-picture" />
+                </div>
+              )}
+            </div>
+          ) : (
+            <NavLink to="/login/oauth2/code/google" className="nav-link">Login</NavLink>
+          )}
+        </nav>
+      </header>
     </div>
   );
-}
+};
 
 export default Nav;

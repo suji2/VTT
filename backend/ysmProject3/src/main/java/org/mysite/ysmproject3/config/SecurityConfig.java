@@ -17,10 +17,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +34,13 @@ import java.util.Map;
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
+
+    private final ClientRegistrationRepository clientRegistrationRepository;
+
+    // 추가된 생성자
+    public SecurityConfig(ClientRegistrationRepository clientRegistrationRepository) {
+        this.clientRegistrationRepository = clientRegistrationRepository;
+    }
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder(){
@@ -53,7 +64,7 @@ public class SecurityConfig {
                                 log.info("securityConfig : {}", request);
                                 log.error("Authentication failed: {}", exception.getMessage(), exception); // 예외 메시지 및 스택 트레이스를 로그로 기록
                                 Map<String, String> failData = new HashMap<>();
-                                failData.put("message", "선문대 이메일이 아닙니다.");
+                                failData.put("message", "로그인 실패.");
 
                                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                                 response.setContentType("application/json;charset=UTF-8");
@@ -81,12 +92,25 @@ public class SecurityConfig {
                                 // 쿠키 추가
                                 response.addCookie(accessTokenCookie);
 
-                                response.sendRedirect("http://localhost:3000/main?user=google_" + oAuth2User.getAttribute("sub"));
+                                response.sendRedirect("http://localhost:3000/home");
                             }
                         })
                 )
-                .logout(Customizer.withDefaults());
+                .logout(logout -> logout
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout")) // 추가된 부분
+                        .logoutSuccessHandler(oidcLogoutSuccessHandler()) // 추가된 부분
+                        .deleteCookies("JSESSIONID", "ACCESS_TOKEN") // 추가된 부분
+                        .invalidateHttpSession(true) // 추가된 부분
+                        .clearAuthentication(true) // 추가된 부분
+                );
         return http.build();
+    }
+
+    // 추가된 메서드
+    private OidcClientInitiatedLogoutSuccessHandler oidcLogoutSuccessHandler() {
+        OidcClientInitiatedLogoutSuccessHandler successHandler = new OidcClientInitiatedLogoutSuccessHandler(clientRegistrationRepository);
+        successHandler.setPostLogoutRedirectUri("http://localhost:3000/"); // 로그아웃 후 리다이렉트할 URI 설정
+        return successHandler;
     }
 
     @Bean

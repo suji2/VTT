@@ -1,37 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import './App.css';
-import axios from 'axios';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import axios from './api/axiosConfig'; // axiosConfig.js 파일 import
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './HOME/Home';
 import About from './ABOUT/About';
-import Version from './Version/Version';
-import WriteForm from './Version/WriteForm';
-import UserProfile from './LOGIN/UserProfile';
-import EditForm from './Version/EditForm'; // EditForm 임포트 추가
-import Login from './LOGIN/login';
-import MyPage from './LOGIN/MyPage';
-import { getUserInfo } from './api/getUserInfo';
+import Version from './Q&A/Version';
+import WriteForm from './Q&A/WriteForm';
+import EditForm from './Q&A/EditForm'; // EditForm 임포트 추가
+import getUserInfo from './api/getUserInfo'; // getUserInfo 올바르게 임포트
 import Nav from './components/Nav'; // Nav 임포트 추가
 import LoginButton from './components/LoginButton'; // LoginButton 임포트 추가
+import PostLoginToken from './api/postLoginToken'; // PostLoginToken 임포트 추가
+import Channel from './HOME/Chammel'; // Channel 임포트 추가
+import VideoPlayer from './HOME/VideoPlayer'; // VideoPlayer 임포트 추가
 
 function App() {
   const [data, setData] = useState([]);
   const [isLogin, setIsLogin] = useState(false);
-  console.log("data = ", data);
 
   useEffect(() => {
     const initLogin = async () => {
-      const name = await getUserInfo();
-      setIsLogin(!!name);
+      const userInfo = await getUserInfo();
+      setIsLogin(!!userInfo);
     };
     initLogin();
 
-    axios.get('/api/question')
-      .then(res => {
-        console.log(res.data);
-        setData(res.data);
-      })
-      .catch(err => console.log(err));
   }, []);
 
   return (
@@ -45,15 +37,15 @@ function App() {
               <Route path="/about" element={<About />} />
               <Route path="/version" element={<Version />} />
               <Route path="/write" element={<WriteForm />} />
-              <Route path="/userprofile" element={<UserProfile />} />
               <Route path="/edit/:questionId" element={<EditForm />} /> {/* EditForm 라우트 추가 */}
-              <Route path="/mypage" element={isLogin ? <MyPage isLogin={isLogin} /> : <Navigate to="/" />} /> {/* MyPage 라우트 추가 */}
+              <Route path="/channel/:channelId" element={<Channel />} /> {/* Channel 라우트 추가 */}
+              <Route path="/video/:videoId/:title" element={<VideoPlayer />} /> {/* VideoPlayer 라우트 추가 */}
             </Routes>
           </>
         ) : (
           <Routes>
-            <Route path="/" element={<LoginButton />} />
-            <Route path="/login" element={<Login isLogin={isLogin} setIsLogin={setIsLogin} />} /> {/* Login 라우트 추가 */}
+            <Route path="/" element={<LoginButton setIsLogin={setIsLogin} />} />
+            <Route path="/login/oauth2/code/google" element={<PostLoginToken setIsLogin={setIsLogin} />} /> {/* OAuth2 로그인 콜백 라우트 추가 */}
           </Routes>
         )}
       </div>

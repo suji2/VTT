@@ -1,8 +1,7 @@
 package org.mysite.ysmproject3.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.mysite.ysmproject3.service.CaptionSummaryService;
-import org.mysite.ysmproject3.service.CommentSummaryService;
+import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,23 +14,27 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 public class SummaryController {
-    private final CaptionSummaryService captionSummaryService;
-    private final CommentSummaryService commentSummaryService;
 
-    // 리액트 요약 출력
-    @PostMapping("/summarize")
-    public String getSummary(@RequestBody String videoId) {
+    @PostMapping("/youtube/summarize")
+    public Map<String, String> getSummary(@RequestBody Map<String, String> request) {
+        String videoId = request.get("video_id");
+        if (videoId == null || videoId.isEmpty()) {
+            throw new IllegalArgumentException("Video ID is required");
+        }
+
         RestTemplate restTemplate = new RestTemplate();
-        String url = "http://localhost:5001/summarize";
+        String url = "http://192.168.34.4:5001/summarize";
 
-        Map<String, String> request = new HashMap<>();
-        request.put("video_id", videoId);
+        Map<String, String> flaskRequest = new HashMap<>();
+        flaskRequest.put("video_id", videoId);
 
-        ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
+        ResponseEntity<Map> response = restTemplate.postForEntity(url, flaskRequest, Map.class);
 
-        return response.getBody();
+        Map<String, String> responseBody = response.getBody();
+        if (responseBody == null || responseBody.get("summary") == null) {
+            throw new RuntimeException("Failed to get summary from Flask server");
+        }
+
+        return responseBody;
     }
-
-
-
 }

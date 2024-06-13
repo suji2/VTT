@@ -1,0 +1,56 @@
+.channel {
+    padding: 20px;
+    background-color: #f9f9f9;
+  }
+  
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .videos-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .video {
+    display: flex;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: left;
+    align-items: center;
+  }
+  
+  .video-thumbnail {
+    width: 150px;
+    height: auto;
+    border-radius: 8px;
+    margin-right: 20px;
+  }
+  
+  .video-details {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .video-title {
+    margin: 10px 0;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .video-description {
+    font-size: 14px;
+    color: #666;
+    margin: 10px 0;
+  }
+  
+  .video-published {
+    font-size: 12px;
+    color: #999;
+    margin-top: 10px;
+  }
+  

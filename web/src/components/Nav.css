@@ -1,18 +1,18 @@
 .ABOUT {
-  background-color: white;
+  background-color: #ffffff;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
 .header {
-  background-color: white; /* 헤더 배경을 흰색으로 설정 */
+  background-color: #ffffff; /* 헤더 배경을 흰색으로 설정 */
   color: black; /* 헤더 내 텍스트 색상을 검정으로 설정 */
   padding: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 3px solid #000000; /* 올바른 색상 코드 형식 */
+  border-bottom: 3px solid #FDCFBB; /* 올바른 색상 코드 형식 */
 }
 
 .nav-title {

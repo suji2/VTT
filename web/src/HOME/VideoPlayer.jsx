@@ -28,23 +28,23 @@ const VideoPlayer = () => {
   return (
     <div className="video-player-container">
       <h2>{decodeURIComponent(title)}</h2>
-      <div className="video-wrapper">
-        <iframe
-          width="560"
-          height="315"
-          src={`https://www.youtube.com/embed/${videoId}`}
-          frameBorder="0"
-          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-          title="YouTube video player"
-        ></iframe>
+      <div className="video-summary-wrapper">
+        <div className="video-wrapper">
+          <iframe
+            className="video-frame"
+            src={`https://www.youtube.com/embed/${videoId}`}
+            frameBorder="0"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            title="YouTube video player"
+          ></iframe>
+        </div>
+        <div className="summary-wrapper">
+          <button onClick={handleSummary} className="summary-button" disabled={loading}>
+            {loading ? "로딩 중..." : summary ? summary : "요약하기"}
+          </button>
+        </div>
       </div>
-      <button onClick={handleSummary} className="summary-button">요약하기</button>
-      {loading ? (
-        <p>로딩 중...</p>
-      ) : (
-        summary && <p className="video-summary">{summary}</p>
-      )}
     </div>
   );
 };

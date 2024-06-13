@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import axios from 'axios';
+import { NavLink, useNavigate } from 'react-router-dom';
+import axios from '../api/axiosConfig'; // 경로 수정
 import Cookies from 'js-cookie';
 import './Nav.css';
 import { postLogout } from '../api/postLogout';
 
 const Nav = ({ isLogin, setIsLogin }) => {
   const [userInfo, setUserInfo] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isLogin) {
@@ -30,10 +31,14 @@ const Nav = ({ isLogin, setIsLogin }) => {
   }, [isLogin]);
 
   const handleLogout = async () => {
-    await postLogout();
-    Cookies.remove('ACCESS_TOKEN');
-    setIsLogin(false);
-    window.location.href = '/'; // 로그아웃 성공 시 리디렉트
+    try {
+      await postLogout();
+      Cookies.remove('ACCESS_TOKEN');
+      setIsLogin(false);
+      navigate('/login'); // 로그아웃 성공 시 로그인 페이지로 리디렉트
+    } catch (error) {
+      console.error('로그아웃 중 오류 발생', error);
+    }
   };
 
   return (

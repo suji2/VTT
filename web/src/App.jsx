@@ -44,8 +44,8 @@ function App() {
           </>
         ) : (
           <Routes>
-            <Route path="/" element={<LoginButton />} />
-            <Route path="/login/oauth2/code/google" element={<PostLoginToken />} /> {/* OAuth2 로그인 콜백 라우트 추가 */}
+            <Route path="/" element={<LoginButton setIsLogin={setIsLogin} />} />
+            <Route path="/login/oauth2/code/google" element={<PostLoginToken setIsLogin={setIsLogin} />} /> {/* OAuth2 로그인 콜백 라우트 추가 */}
           </Routes>
         )}
       </div>

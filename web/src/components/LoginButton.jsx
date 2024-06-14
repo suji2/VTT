@@ -10,7 +10,7 @@ const LoginButton = ({ setIsLogin }) => {
     const accessToken = Cookies.get('ACCESS_TOKEN');
     if (accessToken) {
       setIsLogin(true); // 로그인 상태 업데이트
-      navigate('/'); // Access token이 있는 경우 home으로 리디렉션
+      navigate('/home'); // Access token이 있는 경우 home으로 리디렉션
     }
   }, [navigate, setIsLogin]);
 
@@ -20,7 +20,7 @@ const LoginButton = ({ setIsLogin }) => {
 
   return (
     <div className="login-container">
-      <img src="/VTT.webp" alt="VTT" className="login-image" />
+      <img src="/hhhhh.gif" alt="VTT" className="login-image" />
       <button onClick={handleLoginClick} className="login-button">
         로그인하러 가기
       </button>

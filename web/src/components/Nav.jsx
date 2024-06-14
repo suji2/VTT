@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import axios from '../api/axiosConfig'; // 경로 수정
+import axios from 'axios';
 import Cookies from 'js-cookie';
 import './Nav.css';
 import { postLogout } from '../api/postLogout';
@@ -35,7 +35,7 @@ const Nav = ({ isLogin, setIsLogin }) => {
       await postLogout();
       Cookies.remove('ACCESS_TOKEN');
       setIsLogin(false);
-      navigate('/login'); // 로그아웃 성공 시 로그인 페이지로 리디렉트
+      navigate('/'); // 로그아웃 성공 시 로그인 페이지로 리디렉트
     } catch (error) {
       console.error('로그아웃 중 오류 발생', error);
     }
@@ -44,9 +44,9 @@ const Nav = ({ isLogin, setIsLogin }) => {
   return (
     <div className="NAV">
       <header className="header">
-        <NavLink to="/" className="nav-title" end>VTT(Video To Text)</NavLink>
+        <NavLink to="/home" className="nav-title" end>VTT(Video To Text)</NavLink>
         <nav className="nav-links">
-          <NavLink to="/" className={({ isActive }) => isActive ? 'nav-link active-link' : 'nav-link'} end>HOME</NavLink>
+          <NavLink to="/home" className={({ isActive }) => isActive ? 'nav-link active-link' : 'nav-link'} end>HOME</NavLink>
           <NavLink to="/about" className={({ isActive }) => isActive ? 'nav-link active-link' : 'nav-link'}>ABOUT</NavLink>
           {isLogin ? (
             <div className="nav-auth">
